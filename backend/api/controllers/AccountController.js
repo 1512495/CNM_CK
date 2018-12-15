@@ -4,43 +4,43 @@ const util = require('util')
 const mysql = require('mysql')
 const db = require('./../db')
 
-const table = 'staff'
+const table = 'account'
 
 module.exports = {
     get: (req, res) => {
-        let sql = 'SELECT * FROM staff'
+        let sql = 'SELECT * FROM account'
         db.query(sql, (err, response) => {
             if (err) throw err
             res.json(response)
         })
     },
     detail: (req, res) => {
-        let sql = 'SELECT * FROM staff WHERE id = ?'
-        db.query(sql, [req.params.staffId], (err, response) => {
+        let sql = 'SELECT * FROM account WHERE id = ?'
+        db.query(sql, [req.params.accountId], (err, response) => {
             if (err) throw err
             res.json(response[0])
         })
     },
     update: (req, res) => {
         let data = req.body;
-        let staffId = req.params.staffId;
-        let sql = 'UPDATE staff SET ? WHERE id = ?'
-        db.query(sql, [data, staffId], (err, response) => {
+        let accountId = req.params.accountId;
+        let sql = 'UPDATE account SET ? WHERE id = ?'
+        db.query(sql, [data, accountId], (err, response) => {
             if (err) throw err
             res.json({ message: 'Update success!' })
         })
     },
     store: (req, res) => {
         let data = req.body;
-        let sql = 'INSERT INTO staff values ?'
+        let sql = 'INSERT INTO account values ?'
         db.query(sql, [data], (err, response) => {
             if (err) throw err
             res.json({ message: 'Insert success!' })
         })
     },
     delete: (req, res) => {
-        let sql = 'DELETE FROM staff WHERE id = ?'
-        db.query(sql, [req.params.staffId], (err, response) => {
+        let sql = 'DELETE FROM account WHERE id = ?'
+        db.query(sql, [req.params.accountId], (err, response) => {
             if (err) throw err
             res.json({ message: 'Delete success!' })
         })
