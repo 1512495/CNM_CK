@@ -12,9 +12,48 @@ module.exports = function(app) {
         .get(staffController.get)
         .post(staffController.store);
 
-
     app.route('/staff/:staffId')
         .get(staffController.detail)
         .put(staffController.update)
         .delete(staffController.delete);
-};
+
+
+    app.route('/account')
+        .get(accountController.get)
+        .post(accountController.store);
+
+    app.route('/account/:accountId')
+        .get(accountController.detail)
+        .put(accountController.update)
+        .delete(accountController.delete);
+
+
+    app.route('/reminder')
+        .get(reminderController.get)
+        .post(reminderController.store);
+
+    app.route('/reminder/:reminderId')
+        .get(reminderController.detail)
+        .put(reminderController.update)
+        .delete(reminderController.delete);
+
+
+    app.route('/transaction')
+        .get(transactionController.get)
+        .post(transactionController.store);
+
+    app.route('/transaction/:transactionId')
+        .get(transactionController.detail)
+        .put(transactionController.update)
+        .delete(transactionController.delete);
+
+
+    app.route('/user')
+        .get(userController.get)
+        .post(userController.store);
+
+    app.route('/user/:userId')
+        .get(userController.detail)
+        .put(userController.update)
+        .delete(userController.delete);
+}

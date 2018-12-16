@@ -32,7 +32,7 @@ module.exports = {
     },
     store: (req, res) => {
         let data = req.body;
-        let sql = 'INSERT INTO staff values ?'
+        let sql = 'INSERT INTO staff set ?'
         db.query(sql, [data], (err, response) => {
             if (err) throw err
             res.json({ message: 'Insert success!' })
