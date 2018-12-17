@@ -1,11 +1,13 @@
 'use strict';
-module.exports = function(app) {
+module.exports = function (app) {
     var staffController = require('./controllers/StaffController');
     var userController = require('./controllers/UserController');
     var accountController = require('./controllers/AccountController');
     var reminderController = require('./controllers/ReminderController');
     var transactionController = require('./controllers/TransactionController');
 
+    app.route('/user/login')
+        .post(userController.login);
 
     // todoList Routes
     app.route('/staff')
@@ -49,8 +51,9 @@ module.exports = function(app) {
 
 
     app.route('/user')
-        .get(userController.get)
+        .get(userController.loginRequired, userController.get)
         .post(userController.store);
+
 
     app.route('/user/:userId')
         .get(userController.detail)

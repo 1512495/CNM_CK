@@ -3,6 +3,7 @@
 const util = require('util')
 const mysql = require('mysql')
 const db = require('./../db')
+const jwt = require('jsonwebtoken');
 
 const table = 'user'
 
@@ -44,5 +45,29 @@ module.exports = {
             if (err) throw err
             res.json({ message: 'Delete success!' })
         })
+    },
+    login: (req, res) => {
+        let username = req.body.username;
+        let password = req.body.password;
+        db.query('SELECT * from user where username = "' + username + '"', (err, response) => {
+            if (response) {
+                if (response[0].password == password) {
+                    return res.json({ token: jwt.sign({ email: response[0].email, username: response[0].username, id: response[0].id }, 'RESTFULAPIs') });
+                }
+                else {
+                    res.json("Wrong username or password!");
+                }
+            }
+            else {
+                res.json("Something went wrong");
+            }
+        });
+    },
+    loginRequired: (req, res, next) => {
+        if (req.user) {
+            next();
+        } else {
+            return res.status(401).json({ message: 'Unauthorized user!' });
+        }
     }
 }
