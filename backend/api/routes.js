@@ -9,6 +9,9 @@ module.exports = function (app) {
     app.route('/user/login')
         .post(userController.login);
 
+    app.route('/token')
+        .post(userController.token);
+
     // todoList Routes
     app.route('/staff')
         .get(staffController.get)

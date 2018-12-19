@@ -4,6 +4,8 @@ const util = require('util')
 const mysql = require('mysql')
 const db = require('./../db')
 const jwt = require('jsonwebtoken');
+const randtoken = require('rand-token');
+var refreshTokens = {};
 
 const table = 'user'
 
@@ -52,17 +54,42 @@ module.exports = {
         db.query('SELECT * from user where username = "' + username + '"', (err, response) => {
             if (response) {
                 if (response[0].password == password) {
-                    return res.json({ token: jwt.sign({ email: response[0].email, username: response[0].username, id: response[0].id }, 'RESTFULAPIs') });
+                    let user = { email: response[0].email, username: response[0].username, id: response[0].id };
+                    let token = jwt.sign(user, 'RESTFULAPIs', { expiresIn: 1000 });
+                    var refreshToken = randtoken.uid(256);
+                    refreshTokens[refreshToken] = username;
+                    return res.json({ token: 'JWT' + token, refreshToken: refreshToken });
                 }
                 else {
-                    res.json("Wrong username or password!");
+                    return res.json("Wrong username or password!");
                 }
             }
             else {
-                res.json("Something went wrong");
+                return res.json("Something went wrong");
             }
         });
     },
+
+    token: (req, res) => {
+        var username = req.body.username
+        var refreshToken = req.body.refreshToken
+        if ((refreshToken in refreshTokens) && (refreshTokens[refreshToken] == username)) {
+            db.query('SELECT * from user where username = "' + username + '"', (err, response) => {
+                if (response) {
+                    let user = { email: response[0].email, username: response[0].username, id: response[0].id };
+                    var token = jwt.sign(user, 'RESTFULAPIs', { expiresIn: 300 });
+                    return res.json({ token: 'JWT ' + token });
+                }
+                else {
+                    return res.json("Something went wrong");
+                }
+            })
+        }
+        else {
+            return res.status(401).json({ message: 'Unauthorized user!' })
+        }
+    },
+
     loginRequired: (req, res, next) => {
         if (req.user) {
             next();
