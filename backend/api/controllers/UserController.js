@@ -5,6 +5,8 @@ const mysql = require('mysql')
 const db = require('./../db')
 const jwt = require('jsonwebtoken');
 const randtoken = require('rand-token');
+const SECRET = "JWT secret key ahihii"
+
 var refreshTokens = {};
 
 const table = 'user'
@@ -55,8 +57,10 @@ module.exports = {
             if (response) {
                 if (response[0].password == password) {
                     let user = { email: response[0].email, username: response[0].username, id: response[0].id };
-                    let token = jwt.sign(user, 'RESTFULAPIs', { expiresIn: 1000 });
+                    let token = jwt.sign(user, SECRET, { expiresIn: 1000 });
                     var refreshToken = randtoken.uid(256);
+                    let temp = { access_token: token, refresh_token: refreshToken };
+                    db.query('UPDATE user SET ? where id = ?', [temp, response[0].id]);
                     refreshTokens[refreshToken] = username;
                     return res.json({ token: 'JWT' + token, refreshToken: refreshToken });
                 }
@@ -77,7 +81,9 @@ module.exports = {
             db.query('SELECT * from user where username = "' + username + '"', (err, response) => {
                 if (response) {
                     let user = { email: response[0].email, username: response[0].username, id: response[0].id };
-                    var token = jwt.sign(user, 'RESTFULAPIs', { expiresIn: 300 });
+                    let token = jwt.sign(user, SECRET, { expiresIn: 1000 });
+                    let temp = { access_token: token, refresh_token: refreshToken };
+                    db.query('UPDATE user SET ? where id = ?', [temp, response[0].id]);
                     return res.json({ token: 'JWT ' + token });
                 }
                 else {
