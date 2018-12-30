@@ -15,7 +15,7 @@ function login(username, password) {
         userService.login(username, password)
             .then(
                 user => {
-                    console.log('asdkjbaskdas');
+                    console.log('user');
                     dispatch(success(user));
                     history.push('/');
                 },

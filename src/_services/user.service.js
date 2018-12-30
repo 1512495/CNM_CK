@@ -26,6 +26,7 @@ function login(username, password) {
                             if (resJSON.token) {
                                 localStorage.setItem('token', JSON.stringify(resJSON.token));
                                 localStorage.setItem('user', JSON.stringify(resJSON.user));
+                                localStorage.setItem('refresh_token', JSON.stringify(resJSON.refresh_token));
                                 let user = resJSON.user;
                                 resolve(user);
                             }

@@ -4,6 +4,10 @@ const util = require('util')
 const mysql = require('mysql')
 const db = require('./../db')
 const jwt = require('jsonwebtoken');
+const randtoken = require('rand-token');
+const SECRET = "JWT secret key ahihii"
+
+var refreshTokens = {};
 
 const table = 'user'
 
@@ -53,10 +57,16 @@ module.exports = {
         db.query('SELECT * from user where username = "' + username + '"', (err, response) => {
             if (response.length > 0) {
                 if (response[0].password == password) {
-                    return res.json({ token: jwt.sign({ email: response[0].email, username: response[0].username, id: response[0].id }, 'RESTFULAPIs'), user: { email: response[0].email, username: response[0].username, id: response[0].id } });
+                    let user = { email: response[0].email, username: response[0].username, id: response[0].id };
+                    let token = jwt.sign(user, SECRET, { expiresIn: 1000 });
+                    var refreshToken = randtoken.uid(256);
+                    let temp = { access_token: token, refresh_token: refreshToken };
+                    db.query('UPDATE user SET ? where id = ?', [temp, response[0].id]);
+                    refreshTokens[refreshToken] = username;
+                    return res.json({ token: 'JWT' + token, refresh_token: refreshToken, user: user });
                 }
                 else {
-                    res.json("Wrong username or password!");
+                    return res.json("Wrong username or password!");
                 }
             }
             else {
@@ -64,6 +74,29 @@ module.exports = {
             }
         });
     },
+
+    token: (req, res) => {
+        var username = req.body.username
+        var refreshToken = req.body.refreshToken
+        if ((refreshToken in refreshTokens) && (refreshTokens[refreshToken] == username)) {
+            db.query('SELECT * from user where username = "' + username + '"', (err, response) => {
+                if (response) {
+                    let user = { email: response[0].email, username: response[0].username, id: response[0].id };
+                    let token = jwt.sign(user, SECRET, { expiresIn: 1000 });
+                    let temp = { access_token: token, refresh_token: refreshToken };
+                    db.query('UPDATE user SET ? where id = ?', [temp, response[0].id]);
+                    return res.json({ token: 'JWT ' + token });
+                }
+                else {
+                    return res.json("Something went wrong");
+                }
+            })
+        }
+        else {
+            return res.status(401).json({ message: 'Unauthorized user!' })
+        }
+    },
+
     loginRequired: (req, res, next) => {
         if (req.user) {
             next();
