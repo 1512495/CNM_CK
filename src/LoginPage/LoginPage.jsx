@@ -17,8 +17,6 @@ class LoginPage extends React.Component {
             submitted: false
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(e) {
@@ -43,21 +41,21 @@ class LoginPage extends React.Component {
         return (
             <div className="col-md-6 col-md-offset-3">
                 <div className="alert alert-info">
-                    Username: test<br />
-                    Password: test
+                    Username: admin<br />
+                    Password: admin
                 </div>
                 <h2>Login</h2>
-                <form name="form" onSubmit={this.handleSubmit}>
+                <form name="form" onSubmit={(e) => this.handleSubmit(e)}>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
                         <label htmlFor="username">Username</label>
-                        <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} />
+                        <input type="text" className="form-control" name="username" value={username} onChange={(e) => this.handleChange(e)} />
                         {submitted && !username &&
                             <div className="help-block">Username is required</div>
                         }
                     </div>
                     <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
                         <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
+                        <input type="password" className="form-control" name="password" value={password} onChange={(e) => this.handleChange(e)} />
                         {submitted && !password &&
                             <div className="help-block">Password is required</div>
                         }

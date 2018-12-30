@@ -47,19 +47,20 @@ module.exports = {
         })
     },
     login: (req, res) => {
+        console.log(req.body);
         let username = req.body.username;
         let password = req.body.password;
         db.query('SELECT * from user where username = "' + username + '"', (err, response) => {
-            if (response) {
+            if (response.length > 0) {
                 if (response[0].password == password) {
-                    return res.json({ token: jwt.sign({ email: response[0].email, username: response[0].username, id: response[0].id }, 'RESTFULAPIs') });
+                    return res.json({ token: jwt.sign({ email: response[0].email, username: response[0].username, id: response[0].id }, 'RESTFULAPIs'), user: { email: response[0].email, username: response[0].username, id: response[0].id } });
                 }
                 else {
                     res.json("Wrong username or password!");
                 }
             }
             else {
-                res.json("Something went wrong");
+                res.json("Wrong username or password!");
             }
         });
     },
