@@ -4,6 +4,7 @@ import { authHeader } from '../_helpers';
 export const userService = {
     login,
     logout,
+    signin
 };
 
 function login(username, password) {
@@ -43,11 +44,35 @@ function login(username, password) {
                 }
             });
     })
-
-
 }
 
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
+}
+
+
+function signin(username, password, email, phone) {
+    var data = JSON.stringify({ username: username, password: password, email: email, phone: phone});
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: data
+    };
+    return new Promise(function (resolve, reject) {
+        fetch(`${config.apiUrl}/user`, requestOptions)
+            .then(res => {
+                let error;
+                if (res.status == 200) {
+                    resolve(res.data);
+                }
+                else {
+                    error = "Server is not working";
+                    reject(error);
+                }
+            });
+    })
 }

@@ -29,6 +29,8 @@ class HomePage extends React.Component {
                 }
                 <p>
                     <Link to="/login">Logout</Link>
+                    <br/>
+                    <Link to="/signin">SignIn</Link>
                 </p>
             </div>
         );
