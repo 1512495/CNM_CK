@@ -64,7 +64,7 @@ module.exports = {
                         let temp = { access_token: token, refresh_token: refreshToken };
                         db.query('UPDATE user SET ? where id = ?', [temp, response[0].id]);
                         refreshTokens[refreshToken] = username;
-                        return res.json({ token: 'JWT' + token, refresh_token: refreshToken, user: user });
+                        return res.json({ token: 'JWT ' + token, refresh_token: refreshToken, user: user });
                     } else {
                         return res.json("Wrong username or password!");
                     }

@@ -2,49 +2,69 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { userActions } from '../_actions';
+import { fetchAccountList } from '../_actions/account.actions';
 
 class HomePage extends React.Component {
-    componentDidMount() {
-        console.log('a');
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: this.props.user,
+            token: '',
+        };
+    }
+
+    async componentDidMount() {
+        let token = await JSON.parse(localStorage.getItem('token'));
+        console.log(token);
+        await this.setState({ token: token });
+        setTimeout(() => {
+            this.props.fetchAccountList(this.state.user.id, this.state.token);
+        }, 500)
+
+    }
+
+    componentWillReceiveProps(next) {
+        this.accountList = next.accountList;
+        console.log(this.accountList);
     }
 
     render() {
-        const { user, users } = this.props;
         return (
             <div className="col-md-6 col-md-offset-3">
-                <h1>Hello {user.username}!</h1>
+                <h1>Hello {this.state.user.username}!</h1>
                 <p>You're logged in with React & JWT!!</p>
                 <h3>Users from secure api end point:</h3>
-                {users.loading && <em>Loading users...</em>}
-                {users.error && <span className="text-danger">ERROR: {users.error}</span>}
-                {users.items &&
+
+                {this.accountList &&
                     <ul>
-                        {users.items.map((user, index) =>
-                            <li key={user.id}>
-                                {user.firstName + ' ' + user.lastName}
+                        {this.accountList.map((account, index) =>
+                            <li key={account.id}>
+                                {account.account_number + ' ' + account.balance}
                             </li>
                         )}
                     </ul>
                 }
                 <p>
                     <Link to="/login">Logout</Link>
-                    <br/>
-                    <Link to="/signup">Sign up</Link>
                 </p>
+                <button></button>
             </div>
         );
     }
 }
 
-function mapStateToProps(state) {
-    const { users, authentication } = state;
-    const { user } = authentication;
+function bindAction(dispatch) {
     return {
-        user,
-        users
+        fetchAccountList: (id, token) => dispatch(fetchAccountList(id, token)),
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        user: state.authentication.user,
+        users: state.users,
+        accountList: state.accountList.list
     };
 }
 
-const connectedHomePage = connect(mapStateToProps)(HomePage);
-export { connectedHomePage as HomePage };
+export default connect(mapStateToProps, bindAction)(HomePage);

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { userActions } from '../_actions';
@@ -35,6 +34,10 @@ class LoginPage extends React.Component {
         }
     }
 
+    goToSignup() {
+        this.props.history.push({ pathname: '/signup' });
+    }
+
     render() {
         const { loggingIn } = this.props;
         const { username, password, submitted } = this.state;
@@ -67,7 +70,7 @@ class LoginPage extends React.Component {
                         }
                     </div>
                 </form>
-                <button className="btn btn-default">Sign Up now!</button>
+                <button className="btn btn-default" onClick={() => this.goToSignup()}>Sign Up now!</button>
             </div>
         );
     }
