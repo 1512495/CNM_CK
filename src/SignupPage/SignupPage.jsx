@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import { userActions } from '../_actions';
 
-class SignInPage extends React.Component {
-    constructor(props){
+class SignupPage extends React.Component {
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -29,7 +29,7 @@ class SignInPage extends React.Component {
         const { username, password, email, phone } = this.state;
         const { dispatch } = this.props;
         if (username && password && email && phone) {
-            dispatch(userActions.signin(username, password, email, phone));
+            dispatch(userActions.signup(username, password, email, phone));
         }
     }
 
@@ -38,7 +38,7 @@ class SignInPage extends React.Component {
         const { username, password, email, phone, submitted } = this.state;
         return (
             <div className="col-md-6 col-md-offset-3">
-                <h2>SignIn</h2>
+                <h2>Sign up</h2>
                 <form name="form" onSubmit={(e) => this.handleSubmit(e)}>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
                         <label htmlFor="username">Username</label>
@@ -69,7 +69,7 @@ class SignInPage extends React.Component {
                         }
                     </div>
                     <div className="form-group">
-                        <button className="btn btn-primary">Sign In</button>
+                        <button className="btn btn-primary">Sign Up</button>
                         {signingIn &&
                             <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                         }
@@ -87,5 +87,5 @@ function mapStateToProps(state) {
     };
 }
 
-const connectedSignInPage = connect(mapStateToProps)(SignInPage);
-export { connectedSignInPage as SignInPage };
+const connectedSignupPage = connect(mapStateToProps)(SignupPage);
+export { connectedSignupPage as SignupPage };

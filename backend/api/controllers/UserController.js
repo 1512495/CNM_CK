@@ -55,15 +55,19 @@ module.exports = {
         let username = req.body.username;
         let password = req.body.password;
         db.query('SELECT * from user where username = "' + username + '"', (err, response) => {
-            if (response.length > 0) {
-                if (response[0].password == password) {
-                    let user = { email: response[0].email, username: response[0].username, id: response[0].id };
-                    let token = jwt.sign(user, SECRET, { expiresIn: 1000 });
-                    var refreshToken = randtoken.uid(256);
-                    let temp = { access_token: token, refresh_token: refreshToken };
-                    db.query('UPDATE user SET ? where id = ?', [temp, response[0].id]);
-                    refreshTokens[refreshToken] = username;
-                    return res.json({ token: 'JWT' + token, refresh_token: refreshToken, user: user });
+            if (response) {
+                if (response.length > 0) {
+                    if (response[0].password == password) {
+                        let user = { email: response[0].email, username: response[0].username, id: response[0].id };
+                        let token = jwt.sign(user, SECRET, { expiresIn: 1000 });
+                        var refreshToken = randtoken.uid(256);
+                        let temp = { access_token: token, refresh_token: refreshToken };
+                        db.query('UPDATE user SET ? where id = ?', [temp, response[0].id]);
+                        refreshTokens[refreshToken] = username;
+                        return res.json({ token: 'JWT' + token, refresh_token: refreshToken, user: user });
+                    } else {
+                        return res.json("Wrong username or password!");
+                    }
                 }
                 else {
                     return res.json("Wrong username or password!");

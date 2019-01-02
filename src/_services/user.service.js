@@ -4,7 +4,7 @@ import { authHeader } from '../_helpers';
 export const userService = {
     login,
     logout,
-    signin
+    signup
 };
 
 function login(username, password) {
@@ -32,15 +32,15 @@ function login(username, password) {
                                 resolve(user);
                             }
                             else {
-                                error = "Cant get token!"
-                                reject(error);
+                                error = "Log in failed! Try again"
+                                reject(resJSON);
                             }
                         }
                     )
                 }
                 else {
                     error = "Server is not working";
-                    reject(error);
+                    reject(resJSON);
                 }
             });
     })
@@ -52,7 +52,7 @@ function logout() {
 }
 
 
-function signin(username, password, email, phone) {
+function signup(username, password, email, phone) {
     var data = JSON.stringify({ username: username, password: password, email: email, phone: phone});
     const requestOptions = {
         method: 'POST',

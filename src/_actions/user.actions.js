@@ -6,7 +6,7 @@ import { history } from '../_helpers';
 export const userActions = {
     login,
     logout,
-    signin
+    signup
 };
 
 function login(username, password) {
@@ -39,11 +39,11 @@ function logout() {
 }
 
 
-function signin(username, password, email, phone) {
+function signup(username, password, email, phone) {
     return dispatch => {
         dispatch(request({ username }));
 
-        userService.signin(username, password, email, phone)
+        userService.signup(username, password, email, phone)
             .then(
                 user => {
                     dispatch(success(user));
