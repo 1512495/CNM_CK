@@ -67,6 +67,7 @@ class LoginPage extends React.Component {
                         }
                     </div>
                 </form>
+                <button className="btn btn-default">Sign Up now!</button>
             </div>
         );
     }
