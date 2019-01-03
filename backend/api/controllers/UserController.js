@@ -58,7 +58,7 @@ module.exports = {
             if (response) {
                 if (response.length > 0) {
                     if (response[0].password == password) {
-                        let user = { email: response[0].email, username: response[0].username, id: response[0].id };
+                        let user = { email: response[0].email, username: response[0].username, name: response[0].name, id: response[0].id };
                         let token = jwt.sign(user, SECRET, { expiresIn: 1000 });
                         var refreshToken = randtoken.uid(256);
                         let temp = { access_token: token, refresh_token: refreshToken };
@@ -85,7 +85,7 @@ module.exports = {
         if ((refreshToken in refreshTokens) && (refreshTokens[refreshToken] == username)) {
             db.query('SELECT * from user where username = "' + username + '"', (err, response) => {
                 if (response) {
-                    let user = { email: response[0].email, username: response[0].username, id: response[0].id };
+                    let user = { email: response[0].email, username: response[0].username, name: response[0].name, id: response[0].id };
                     let token = jwt.sign(user, SECRET, { expiresIn: 1000 });
                     let temp = { access_token: token, refresh_token: refreshToken };
                     db.query('UPDATE user SET ? where id = ?', [temp, response[0].id]);

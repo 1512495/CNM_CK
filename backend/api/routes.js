@@ -28,10 +28,12 @@ module.exports = function (app) {
         .post(accountController.store);
 
     app.route('/account/:accountId')
-        .get(accountController.detail)
+        .get(accountController.detail) //get by user_id
         .put(accountController.update)
-        .delete(accountController.delete);
+        .delete(accountController.delete)
 
+    app.route('/account_number/:account_number')
+        .get(accountController.getByAccountNumber);
 
     app.route('/reminder')
         .get(reminderController.get)

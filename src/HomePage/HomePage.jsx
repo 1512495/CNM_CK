@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { fetchAccountList } from '../_actions/account.actions';
+import ReactTable from 'react-table';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -28,26 +29,45 @@ class HomePage extends React.Component {
         console.log(this.accountList);
     }
 
-    render() {
-        return (
-            <div className="col-md-6 col-md-offset-3">
-                <h1>Hello {this.state.user.username}!</h1>
-                <p>You're logged in with React & JWT!!</p>
-                <h3>Users from secure api end point:</h3>
+    accountDetail(account) {
+        console.log(account);
+    }
 
+    render() {
+        const columns = [{
+            Header: 'Số tài khoản',
+            accessor: 'account_number' // String-based value accessors!
+        }, {
+            Header: 'Số dư hiện tại',
+            accessor: 'balance',
+            Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
+        }]
+        return (
+            <div >
+                <h1>Xin chào {this.state.user.name}!</h1>
+                {!this.accountList &&<div>
+                    Đang lấy dữ liệu, vui lòng chờ
+                </div>}
                 {this.accountList &&
-                    <ul>
-                        {this.accountList.map((account, index) =>
-                            <li key={account.id}>
-                                {account.account_number + ' ' + account.balance}
-                            </li>
-                        )}
-                    </ul>
+                    <div>
+                        <h3>Tài khoản của bạn:</h3>
+                        <ReactTable
+                            getTdProps={(state, rowInfo, column, instance) => {
+                                return {
+                                    onClick: (e, handleOriginal) => {
+                                        console.log("info", rowInfo);
+
+                                        if (handleOriginal) {
+                                            this.accountDetail(rowInfo);
+                                        }
+                                    }
+                                };
+                            }}
+                            data={this.accountList}
+                            columns={columns}
+                        />
+                    </div>
                 }
-                <p>
-                    <Link to="/login">Logout</Link>
-                </p>
-                <button></button>
             </div>
         );
     }

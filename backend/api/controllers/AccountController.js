@@ -44,5 +44,12 @@ module.exports = {
             if (err) throw err
             res.json({ message: 'Delete success!' })
         })
+    },
+    getByAccountNumber: (req, res) => {
+        let sql = 'SELECT DISTINCT name, user_id, email FROM account JOIN user WHERE account_number = ? AND user_id = user.id'
+        db.query(sql, [req.params.account_number], (err, response) => {
+            if (err) throw err
+            res.json(response)
+        })
     }
 }

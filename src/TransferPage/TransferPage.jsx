@@ -1,20 +1,37 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import config from 'config';
+import { fetchAccountList } from '../_actions/account.actions';
+import ReactTable from 'react-table';
 
-import { userActions } from '../_actions';
-
-class SignupPage extends React.Component {
+class TransferPage extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            username: '',
-            password: '',
+            user: this.props.user,
+            token: '',
+            account_number: '',
+            name: '',
             email: '',
             phone: '',
             submitted: false
         };
+    }
+
+    async componentDidMount() {
+        let token = await JSON.parse(localStorage.getItem('token'));
+        console.log(token);
+        await this.setState({ token: token });
+        setTimeout(() => {
+            this.props.fetchAccountList(this.state.user.id, this.state.token);
+        }, 500)
+
+    }
+
+    componentWillReceiveProps(next) {
+        this.accountList = next.accountList;
+        console.log(this.accountList);
     }
 
     handleChange(e) {
@@ -26,37 +43,56 @@ class SignupPage extends React.Component {
         e.preventDefault();
 
         this.setState({ submitted: true });
-        const { username, password, email, phone } = this.state;
+        const { account_number, email, phone } = this.state;
         const { dispatch } = this.props;
-        if (username && password && email && phone) {
+        if (username && email && phone) {
             dispatch(userActions.signup(username, password, email, phone));
         }
     }
 
-    goToLogin() {
-        this.props.history.push({ pathname: '/login' });
+    fetchAccount(e) {
+        e.preventDefault();
+        fetch(`${config.apiUrl}/account_number/` + this.state.account_number, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'JWT ' + this.token
+            },
+        }).then((response) => {
+            if (response.status == 200) {
+                response.json().then(resJSON => {
+                    if (resJSON.length > 0) {
+                        this.setState({ name: resJSON[0].name });
+                    }
+                    else {
+                        this.setState({ name: "Không có tài khoản nào" });
+                    }
+                })
+            }
+            else { return; }
+        }).catch(error => console.log(error));
     }
 
     render() {
         const { signingIn } = this.props;
-        const { username, password, email, phone, submitted } = this.state;
+        const { account_number, name, email, phone, submitted } = this.state;
         return (
+
             <div className="col-md-6 col-md-offset-3">
-                <h2>Sign up</h2>
+                <h2>Chuyển tiền</h2>
                 <form name="form" onSubmit={(e) => this.handleSubmit(e)}>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
-                        <label htmlFor="username">Username</label>
-                        <input type="text" className="form-control" name="username" value={username} onChange={(e) => this.handleChange(e)} />
-                        {submitted && !username &&
-                            <div className="help-block">Username is required</div>
+                        <label htmlFor="account_number">Số tài khoản nhận tiền</label>
+                        <input type="text" className="form-control" name="account_number" value={account_number} onChange={(e) => this.handleChange(e)} />
+                        {submitted && !account_number &&
+                            <div className="help-block">Account number is required</div>
                         }
+                        <button className="btn btn-primary" onClick={(e) => this.fetchAccount(e)}>
+                            Truy vấn thông tin
+                        </button>
                     </div>
-                    <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
-                        <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={password} onChange={(e) => this.handleChange(e)} />
-                        {submitted && !password &&
-                            <div className="help-block">Password is required</div>
-                        }
+                    <div className='form-group' >
+                        <label htmlFor="name">Tên người thụ hưởng</label>
+                        <input disabled type="text" className="form-control" name="name" value={name} />
                     </div>
                     <div className={'form-group' + (submitted && !email ? ' has-error' : '')}>
                         <label htmlFor="email">Email</label>
@@ -73,24 +109,29 @@ class SignupPage extends React.Component {
                         }
                     </div>
                     <div className="form-group">
-                        <button className="btn btn-primary">Sign Up</button>
+                        <button className="btn btn-primary">Chuyển tiền</button>
                         {signingIn &&
                             <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                         }
                     </div>
                 </form>
-                <button className="btn btn-default" onClick={() => this.goToLogin()}>Back to login</button>
             </div>
         );
     }
 }
 
-function mapStateToProps(state) {
-    const { signingIn } = state.authentication;
+function bindAction(dispatch) {
     return {
-        signingIn
+        fetchAccountList: (id, token) => dispatch(fetchAccountList(id, token)),
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        user: state.authentication.user,
+        users: state.users,
+        accountList: state.accountList.list
     };
 }
 
-const connectedSignupPage = connect(mapStateToProps)(SignupPage);
-export { connectedSignupPage as SignupPage };
+export default connect(mapStateToProps, bindAction)(TransferPage);
