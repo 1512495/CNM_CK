@@ -18,3 +18,13 @@ export function users(state = {}, action) {
       return state
   }
 }
+
+export function userList(state = [], action) {
+  if (action.type === "FETCH_USER_LIST_SUCCESS") {
+      return {
+          ...state,
+          list: action.list,
+      };
+  }
+  return state;
+}

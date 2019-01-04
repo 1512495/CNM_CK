@@ -10,6 +10,7 @@ import LoginPage from '../LoginPage/LoginPage';
 import SignupPage from '../SignupPage/SignupPage';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import TransferPage from '../TransferPage/TransferPage';
+import ListUserPage from '../ListUserPage/ListUserPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -50,6 +51,7 @@ class App extends React.Component {
                             <ul>
                                 <li><Link to="/">Trang chủ</Link></li>
                                 <li><Link to="/transfer">Chuyển tiền</Link></li>
+                                <li><Link to="/userList">userList</Link></li>
                                 <li><a href="#contact">Danh sách người nhận</a></li>
                                 <li><a href="#contact">Lịch sử</a></li>
 
@@ -63,7 +65,7 @@ class App extends React.Component {
                                 <PrivateRoute exact path="/transfer" component={TransferPage} />
                                 <Route path="/login" component={LoginPage} />
                                 <Route path="/signup" component={SignupPage} />
-
+                                <PrivateRoute path="/userList" component={ListUserPage} />
                                 <Route component={NotFoundPage} />
                             </Switch>
                         </div>
