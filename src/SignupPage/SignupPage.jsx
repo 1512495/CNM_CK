@@ -92,5 +92,4 @@ function mapStateToProps(state) {
     };
 }
 
-const connectedSignupPage = connect(mapStateToProps)(SignupPage);
-export { connectedSignupPage as SignupPage };
+export default connect(mapStateToProps)(SignupPage);

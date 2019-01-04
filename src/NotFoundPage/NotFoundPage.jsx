@@ -7,4 +7,4 @@ class NotFoundPage extends React.Component {
 }
 
 
-export { NotFoundPage as NotFoundPage };
+export default NotFoundPage;
