@@ -1,4 +1,10 @@
 import config from 'config';
+import { accountService } from '../_services';
+import { userConstants } from '../_constants';
+
+export const accountActions = {
+    signup,
+};
 
 export function fetchAccountList(user_id, token) {
     return dispatch => {
@@ -23,4 +29,25 @@ export function fetchAccountListSuccess(list) {
         type: "FETCH_ACCOUNT_LIST_SUCCESS",
         list,
     };
+}
+
+function signup(userId, account_number, balance) {
+    return dispatch => {
+        dispatch(request({ userId }));
+
+        accountService.signup(userId, account_number, balance)
+            .then(
+                account => {
+                    dispatch(success(account));
+                    history.push('/listAccount');
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+    function request(account) { return { type: userConstants.SIGNUP_REQUEST, account } }
+    function success(account) { return { type: userConstants.SIGNUP_SUCCESS, account } }
+    function failure(error) { return { type: userConstants.SIGNUP_FAILURE, error } }
 }

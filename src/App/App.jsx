@@ -14,6 +14,7 @@ import TransferPage from '../TransferPage/TransferPage';
 import ListUserPage from '../ListUserPage/ListUserPage';
 import AddUserPage from '../AddUserPage/AddUserPage';
 import ListAccountPage from '../ListAccountPage/ListAccountPage';
+import AddAccountPage from '../AddAccountPage/AddAccountPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -85,6 +86,7 @@ class App extends React.Component {
                                 <Route path="/login" component={LoginPage} />
                                 <Route path="/signup" component={SignupPage} />
                                 <Route path="/adduser" component={AddUserPage} />
+                                <Route path="/addAccount" component={AddAccountPage} />
                                 <Route path="/listAccount" component={ListAccountPage} />
                                 <StaffRoute path="/listUserPage" component={ListUserPage} />
                                 <Route component={NotFoundPage} />

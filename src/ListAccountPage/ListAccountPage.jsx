@@ -9,6 +9,7 @@ class ListAccountPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            userId: '',
             token: '',
         };
     }
@@ -18,9 +19,9 @@ class ListAccountPage extends React.Component {
         console.log('UserId: ' + userId);
         let token = await JSON.parse(localStorage.getItem('token'));
         console.log(token);
-        await this.setState({ token: token });
+        await this.setState({ token: token, userId: userId });
         setTimeout(() => {
-            this.props.fetchAccountList(userId, this.state.token);
+            this.props.fetchAccountList(this.state.userId, this.state.token);
         }, 500)
 
     }
@@ -32,6 +33,13 @@ class ListAccountPage extends React.Component {
 
     accountDetail(account) {
         console.log(account);
+    }
+
+    goToAddAccount() {
+        this.props.history.push({ 
+            pathname: '/addAccount',
+            state: { userId: this.state.userId } 
+        });
     }
 
     render() {
@@ -52,6 +60,7 @@ class ListAccountPage extends React.Component {
                 {this.accountList &&
                     <div>
                         <h3>Tài khoản của :</h3>
+                        <button className="btn btn-success" onClick={() => this.goToAddAccount()}>Add Account</button>
                         <ReactTable
                             getTdProps={(state, rowInfo, column, instance) => {
                                 return {
