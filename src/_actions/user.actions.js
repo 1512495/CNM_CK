@@ -62,15 +62,21 @@ function logout() {
 }
 
 
-function signup(username, password, email, phone) {
+function signup(fullname, username, password, email, phone, factor) {
     return dispatch => {
         dispatch(request({ username }));
 
-        userService.signup(username, password, email, phone)
+        userService.signup(fullname, username, password, email, phone)
             .then(
                 user => {
-                    dispatch(success(user));
-                    history.push('/login');
+                    if (factor == 0) {
+                        dispatch(success(user));
+                        history.push('/login');
+                    } else {
+                        dispatch(success(user));
+                        history.push('/listUserPage');
+                    }
+                    
                 },
                 error => {
                     dispatch(failure(error));

@@ -12,6 +12,8 @@ import SignupPage from '../SignupPage/SignupPage';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import TransferPage from '../TransferPage/TransferPage';
 import ListUserPage from '../ListUserPage/ListUserPage';
+import AddUserPage from '../AddUserPage/AddUserPage';
+
 
 class App extends React.Component {
     constructor(props) {
@@ -82,6 +84,7 @@ class App extends React.Component {
                                 <PrivateRoute exact path="/transfer" component={TransferPage} />
                                 <Route path="/login" component={LoginPage} />
                                 <Route path="/signup" component={SignupPage} />
+                                <Route path="/adduser" component={AddUserPage} />
                                 <StaffRoute path="/listUserPage" component={ListUserPage} />
                                 <Route component={NotFoundPage} />
                             </Switch>

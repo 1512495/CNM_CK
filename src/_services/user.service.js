@@ -94,8 +94,8 @@ function logout() {
 }
 
 
-function signup(username, password, email, phone) {
-    var data = JSON.stringify({ username: username, password: password, email: email, phone: phone });
+function signup(fullname, username, password, email, phone) {
+    var data = JSON.stringify({name: fullname, username: username, password: password, email: email, phone: phone });
     const requestOptions = {
         method: 'POST',
         headers: {

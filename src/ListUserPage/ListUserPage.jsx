@@ -36,6 +36,10 @@ class ListUserPage extends React.Component {
         console.log(user);
     }
 
+    goToAddUser() {
+        this.props.history.push({ pathname: '/adduser' });
+    }
+
     render() {
         const columns = [{
             Header: 'ID',
@@ -62,6 +66,7 @@ class ListUserPage extends React.Component {
                 {this.userList &&
                     <div>
                         <h3>Danh sách User:</h3>
+                        <button className="btn btn-success" onClick={() => this.goToAddUser()}>Add User</button>
                         <ReactTable
                             getTdProps={(state, rowInfo, column, instance) => {
                                 return {

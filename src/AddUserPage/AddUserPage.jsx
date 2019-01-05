@@ -4,17 +4,17 @@ import { connect } from 'react-redux';
 
 import { userActions } from '../_actions';
 
-class SignupPage extends React.Component {
+class AddUserPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             fullname: '',
             username: '',
-            password: '',
+            password: '123456',
             email: '',
             phone: '',
-            factor: 0,
+            factor: 1,
             submitted: false
         };
     }
@@ -35,13 +35,9 @@ class SignupPage extends React.Component {
         }
     }
 
-    goToLogin() {
-        this.props.history.push({ pathname: '/login' });
-    }
-
     render() {
         const { signingIn } = this.props;
-        const { username, password, fullname, email, phone, submitted } = this.state;
+        const {fullname, username, email, phone, submitted } = this.state;
         return (
             <div className="col-md-6 col-md-offset-3">
                 <h2>Sign up</h2>
@@ -51,13 +47,6 @@ class SignupPage extends React.Component {
                         <input type="text" className="form-control" name="username" value={username} onChange={(e) => this.handleChange(e)} />
                         {submitted && !username &&
                             <div className="help-block">Username is required</div>
-                        }
-                    </div>
-                    <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
-                        <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={password} onChange={(e) => this.handleChange(e)} />
-                        {submitted && !password &&
-                            <div className="help-block">Password is required</div>
                         }
                     </div>
                     <div className={'form-group' + (submitted && !fullname ? ' has-error' : '')}>
@@ -88,7 +77,6 @@ class SignupPage extends React.Component {
                         }
                     </div>
                 </form>
-                <button className="btn btn-default" onClick={() => this.goToLogin()}>Back to login</button>
             </div>
         );
     }
@@ -101,4 +89,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(SignupPage);
+export default connect(mapStateToProps)(AddUserPage);
