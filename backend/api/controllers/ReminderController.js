@@ -8,8 +8,8 @@ const table = 'reminder'
 
 module.exports = {
     get: (req, res) => {
-        let sql = 'SELECT * FROM reminder'
-        db.query(sql, (err, response) => {
+        let sql = 'SELECT * FROM reminder where user_id = ?'
+        db.query(sql, [req.params.userId], (err, response) => {
             if (err) throw err
             res.json(response)
         })

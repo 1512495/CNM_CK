@@ -33,6 +33,7 @@ module.exports = {
     store: (req, res) => {
         let data = req.body;
         let sql = 'INSERT INTO transaction set ?'
+        console.log(data);
         db.query(sql, [data], (err, response) => {
             if (err) throw err
             res.json({ message: 'Insert success!' })

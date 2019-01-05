@@ -41,8 +41,10 @@ module.exports = function (app) {
         .get(reminderController.get)
         .post(reminderController.store);
 
+    app.route('/reminder/:userId')
+        .get(reminderController.get);
+        
     app.route('/reminder/:reminderId')
-        .get(reminderController.detail)
         .put(reminderController.update)
         .delete(reminderController.delete);
 
