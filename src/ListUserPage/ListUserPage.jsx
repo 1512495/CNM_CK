@@ -21,7 +21,6 @@ class ListUserPage extends React.Component {
     async componentDidMount() {
         let token = await JSON.parse(localStorage.getItem('token'));
         await this.setState({ token: token });
-        console.log(token);
         setTimeout(() => {
             this.props.fetchUserList(token);
         }, 500)
@@ -29,11 +28,14 @@ class ListUserPage extends React.Component {
 
     componentWillReceiveProps(next) {
         this.userList = next.userList;
-        console.log(this.userList);
     }
 
     userDetail(user) {
-        console.log(user);
+        console.log(user.original.id);
+        this.props.history.push({
+            pathname: '/listAccount',
+            state: { userId: user.original.id }
+          });
     }
 
     goToAddUser() {
@@ -71,8 +73,6 @@ class ListUserPage extends React.Component {
                             getTdProps={(state, rowInfo, column, instance) => {
                                 return {
                                     onClick: (e, handleOriginal) => {
-                                        console.log("info", rowInfo);
-
                                         if (handleOriginal) {
                                             this.userDetail(rowInfo);
                                         }
@@ -97,7 +97,6 @@ function bindAction(dispatch) {
 }
 
 function mapStateToProps(state) {
-    console.log(state);
     return {
         staff: state.authentication.staff,
         users: state.users,
