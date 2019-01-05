@@ -8,17 +8,22 @@ import ReactTable from 'react-table';
 class ListUserPage extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
-            user: this.props.user,
+            staff: this.props.staff,
             token: '',
         };
+        if (this.state.staff == {}) {
+            this.props.history.push({ pathname: '/login' });
+        }
     }
 
     async componentDidMount() {
         let token = await JSON.parse(localStorage.getItem('token'));
         await this.setState({ token: token });
+        console.log(token);
         setTimeout(() => {
-            this.props.fetchUserList(this.state.token);
+            this.props.fetchUserList(token);
         }, 500)
     }
 
@@ -50,8 +55,8 @@ class ListUserPage extends React.Component {
         }]
         return (
             <div >
-                <h1>Staff:  {this.state.user.name}!</h1>
-                {!this.userList &&<div>
+                <h1>Staff:  {this.state.staff.name}!</h1>
+                {!this.userList && <div>
                     Đang lấy dữ liệu, vui lòng chờ
                 </div>}
                 {this.userList &&
@@ -88,9 +93,8 @@ function bindAction(dispatch) {
 
 function mapStateToProps(state) {
     console.log(state);
-    debugger;
     return {
-        user: state.authentication.user,
+        staff: state.authentication.staff,
         users: state.users,
         userList: state.userList.list
     };

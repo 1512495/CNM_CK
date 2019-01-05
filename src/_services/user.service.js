@@ -4,7 +4,8 @@ import { authHeader } from '../_helpers';
 export const userService = {
     login,
     logout,
-    signup
+    signup,
+    loginStaff
 };
 
 function login(username, password) {
@@ -46,14 +47,55 @@ function login(username, password) {
     })
 }
 
+function loginStaff(username, password) {
+    var data = JSON.stringify({ username: username, password: password });
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: data
+    };
+    return new Promise(function (resolve, reject) {
+        fetch(`${config.apiUrl}/staff/login`, requestOptions)
+            .then(res => {
+                let error;
+                if (res.status == 200) {
+                    res.json().then(
+                        resJSON => {
+                            if (resJSON.token) {
+                                localStorage.setItem('token', JSON.stringify(resJSON.token));
+                                localStorage.setItem('staff', JSON.stringify(resJSON.staff));
+                                localStorage.setItem('refresh_token', JSON.stringify(resJSON.refresh_token));
+                                let staff = resJSON.staff;
+                                resolve(staff);
+                            }
+                            else {
+                                error = "Log in failed! Try again"
+                                reject(resJSON);
+                            }
+                        }
+                    )
+                }
+                else {
+                    error = "Server is not working";
+                    reject(resJSON);
+                }
+            });
+    })
+}
+
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
+    localStorage.removeItem('staff');
+
 }
 
 
 function signup(username, password, email, phone) {
-    var data = JSON.stringify({ username: username, password: password, email: email, phone: phone});
+    var data = JSON.stringify({ username: username, password: password, email: email, phone: phone });
     const requestOptions = {
         method: 'POST',
         headers: {

@@ -7,7 +7,8 @@ import config from 'config';
 export const userActions = {
     login,
     logout,
-    signup
+    signup,
+    loginStaff
 };
 
 function login(username, password) {
@@ -31,6 +32,27 @@ function login(username, password) {
     function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
     function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
+}
+
+function loginStaff(username, password) {
+    return dispatch => {
+
+        userService.loginStaff(username, password)
+            .then(
+                staff => {
+                    console.log('staff');
+                    dispatch(success(staff));
+                    history.push('/listUserPage');
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function success(staff) { return { type: userConstants.STAFF_LOGIN_SUCCESS, staff } }
+    function failure(error) { return { type: userConstants.STAFF_LOGIN_FAILURE, error } }
 }
 
 
@@ -66,7 +88,7 @@ export function fetchUserList(token) {
         fetch(`${config.apiUrl}/user`, {
             method: 'GET',
             headers: {
-                'Authorization': 'JWT ' + token
+                'Authorization': token
             },
         }).then((response) => {
             if (response.status == 200) {

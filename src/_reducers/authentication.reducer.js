@@ -15,6 +15,11 @@ export function authentication(state = initialState, action) {
         loggedIn: true,
         user: action.user
       };
+    case userConstants.STAFF_LOGIN_SUCCESS:
+      return {
+        loggedIn: true,
+        staff: action.staff
+      };
     case userConstants.LOGIN_FAILURE:
       return {};
     case userConstants.LOGOUT:

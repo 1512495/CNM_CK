@@ -102,7 +102,8 @@ module.exports = {
     },
 
     loginRequired: (req, res, next) => {
-        if (req.user) {
+        console.log(req);
+        if (req.user || req.staff) {
             next();
         } else {
             return res.status(401).json({ message: 'Unauthorized user!' });
