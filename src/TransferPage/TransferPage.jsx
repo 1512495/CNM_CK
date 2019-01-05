@@ -15,8 +15,14 @@ class TransferPage extends React.Component {
             name: '',
             email: '',
             phone: '',
-            submitted: false
+            submitted: false,
+            balance: 0,
+            value: '',
+            amount: 0,
+            content: '',
+            fee_from_user: true,
         };
+        this.accountList = [];
     }
 
     async componentDidMount() {
@@ -29,8 +35,13 @@ class TransferPage extends React.Component {
 
     }
 
+
+    // optionsList = [];
     componentWillReceiveProps(next) {
         this.accountList = next.accountList;
+        // for (let i = 0; i < this.accountList.length; i++) {
+        //     this.optionsList.push(<option value={this.accountList[i].balance} >{this.accountList[i].account_number}</option>);
+        // }
         console.log(this.accountList);
     }
 
@@ -72,14 +83,30 @@ class TransferPage extends React.Component {
         }).catch(error => console.log(error));
     }
 
+
+
     render() {
         const { signingIn } = this.props;
-        const { account_number, name, email, phone, submitted } = this.state;
+        const { account_number, name, submitted, amount } = this.state;
+
         return (
 
             <div className="col-md-6 col-md-offset-3">
                 <h2>Chuyển tiền</h2>
                 <form name="form" onSubmit={(e) => this.handleSubmit(e)}>
+                    <div className="form-group">
+                        <label htmlFor="source">Tài khoản nguồn:</label>
+                        <select className="form-control" value={this.state.value} onChange={(event) => { this.setState({ value: event.target.value }) }}>
+                            <option value='' ></option>
+                            {this.accountList.map(function (object, i) {
+                                return <option key={i} value={object.balance} > {object.account_number}</option>
+                            })}
+                        </select>
+                    </div>
+                    <div className='form-group' >
+                        <label htmlFor="name">Số dư</label>
+                        <input disabled type="text" className="form-control" name="name" value={this.state.value} />
+                    </div>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
                         <label htmlFor="account_number">Số tài khoản nhận tiền</label>
                         <input type="text" className="form-control" name="account_number" value={account_number} onChange={(e) => this.handleChange(e)} />
@@ -94,18 +121,18 @@ class TransferPage extends React.Component {
                         <label htmlFor="name">Tên người thụ hưởng</label>
                         <input disabled type="text" className="form-control" name="name" value={name} />
                     </div>
-                    <div className={'form-group' + (submitted && !email ? ' has-error' : '')}>
-                        <label htmlFor="email">Email</label>
-                        <input type="email" className="form-control" name="email" value={email} onChange={(e) => this.handleChange(e)} />
-                        {submitted && !email &&
-                            <div className="help-block">Email is required</div>
+                    <div className={'form-group' + (submitted && !amount ? ' has-error' : '')}>
+                        <label htmlFor="email">Số tiền chuyển</label>
+                        <input type="number" className="form-control" name="amount" value={amount} onChange={(e) => this.handleChange(e)} />
+                        {submitted && !amount &&
+                            <div className="help-block">Nhập số tiền chuyển</div>
                         }
                     </div>
-                    <div className={'form-group' + (submitted && !phone ? ' has-error' : '')}>
-                        <label htmlFor="phone">Phone</label>
-                        <input type="text" className="form-control" name="phone" value={phone} onChange={(e) => this.handleChange(e)} />
-                        {submitted && !phone &&
-                            <div className="help-block">Phone is required</div>
+                    <div className={'form-group' + (submitted && !amount ? ' has-error' : '')}>
+                        <label htmlFor="email">Nội dung chuyển tiền</label>
+                        <input type="text" className="form-control" name="amount" value={amount} onChange={(e) => this.handleChange(e)} />
+                        {submitted && !amount &&
+                            <div className="help-block">Nhập số tiền chuyển</div>
                         }
                     </div>
                     <div className="form-group">

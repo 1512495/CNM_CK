@@ -8,6 +8,8 @@ module.exports = function (app) {
 
     app.route('/user/login')
         .post(userController.login);
+    app.route('/staff/login')
+        .post(staffController.login);
 
     app.route('/token')
         .post(userController.token);

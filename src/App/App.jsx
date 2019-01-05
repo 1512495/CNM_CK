@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { history } from '../_helpers';
 import { alertActions } from '../_actions';
 import { PrivateRoute } from '../_components';
+import { StaffRoute } from '../_components/StaffRoute';
 import HomePage from '../HomePage/HomePage';
 import LoginPage from '../LoginPage/LoginPage';
 import SignupPage from '../SignupPage/SignupPage';
@@ -27,6 +28,14 @@ class App extends React.Component {
         else {
             this.isLogged = true;
         }
+
+        this.isStaff = false;
+        if (history.location.pathname == '/listUserPage') {
+            this.isStaff = true;
+        }
+        else {
+            this.isStaff = false;
+        }
     }
 
     componentWillReceiveProps(next) {
@@ -35,6 +44,12 @@ class App extends React.Component {
         }
         else {
             this.isLogged = true;
+        }
+        if (history.location.pathname == '/listUserPage') {
+            this.isStaff = true;
+        }
+        else {
+            this.isStaff = false;
         }
     }
 
@@ -49,12 +64,14 @@ class App extends React.Component {
                     <div>
                         {this.isLogged &&
                             <ul>
-                                <li><Link to="/">Trang chủ</Link></li>
-                                <li><Link to="/transfer">Chuyển tiền</Link></li>
-                                <li><Link to="/userList">userList</Link></li>
-                                <li><a href="#contact">Danh sách người nhận</a></li>
-                                <li><a href="#contact">Lịch sử</a></li>
-
+                                {!this.isStaff &&
+                                    <div>
+                                        <li><Link to="/">Trang chủ</Link></li>
+                                        <li><Link to="/transfer">Chuyển tiền</Link></li>
+                                        <li><a href="#contact">Danh sách người nhận</a></li>
+                                        <li><a href="#contact">Lịch sử</a></li>
+                                    </div>
+                                }
                                 <li style={{ float: 'right' }}><Link to="/login">Đăng xuất</Link></li>
                             </ul>
                         }
@@ -65,7 +82,7 @@ class App extends React.Component {
                                 <PrivateRoute exact path="/transfer" component={TransferPage} />
                                 <Route path="/login" component={LoginPage} />
                                 <Route path="/signup" component={SignupPage} />
-                                <PrivateRoute path="/userList" component={ListUserPage} />
+                                <StaffRoute path="/listUserPage" component={ListUserPage} />
                                 <Route component={NotFoundPage} />
                             </Switch>
                         </div>

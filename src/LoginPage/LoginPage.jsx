@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { userActions } from '../_actions';
+import ToggleButton from 'react-toggle-button';
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -13,7 +14,8 @@ class LoginPage extends React.Component {
         this.state = {
             username: '',
             password: '',
-            submitted: false
+            submitted: false,
+            isStaff: false,
         };
 
     }
@@ -29,9 +31,16 @@ class LoginPage extends React.Component {
         this.setState({ submitted: true });
         const { username, password } = this.state;
         const { dispatch } = this.props;
-        if (username && password) {
-            dispatch(userActions.login(username, password));
+        if (this.state.isStaff == true) {
+            if (username && password) {
+                dispatch(userActions.loginStaff(username, password));
+            }
+        } else {
+            if (username && password) {
+                dispatch(userActions.login(username, password));
+            }
         }
+
     }
 
     goToSignup() {
@@ -43,11 +52,21 @@ class LoginPage extends React.Component {
         const { username, password, submitted } = this.state;
         return (
             <div className="col-md-6 col-md-offset-3">
+                <br /><br />
                 <div className="alert alert-info">
-                    Username: admin<br />
-                    Password: admin
+                    Username: user<br />
+                    Password: user
                 </div>
                 <h2>Login</h2>
+                <ToggleButton
+                    inactiveLabel={'User'}
+                    activeLabel={'Staff'}
+                    value={this.state.isStaff}
+                    onToggle={(value) => {
+                        this.setState({
+                            isStaff: !value,
+                        })
+                    }} />
                 <form name="form" onSubmit={(e) => this.handleSubmit(e)}>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
                         <label htmlFor="username">Username</label>
