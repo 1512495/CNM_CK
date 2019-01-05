@@ -80,11 +80,11 @@ CREATE TABLE IF NOT EXISTS `staff` (
 DROP TABLE IF EXISTS `transaction`;
 CREATE TABLE IF NOT EXISTS `transaction` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `from_account` int(11) NOT NULL,
-  `to_account` int(11) NOT NULL,
+  `from_account` varchar(512) NOT NULL,
+  `to_account` varchar(512) NOT NULL,
   `amount` bigint(20) NOT NULL,
   `content` text COLLATE utf16_unicode_ci NOT NULL,
-  `fee_from_user` int(11) NOT NULL,
+  `fee_from_user` varchar(512) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_unicode_ci;
 
