@@ -17,6 +17,7 @@ import ListAccountPage from '../ListAccountPage/ListAccountPage';
 import AddAccountPage from '../AddAccountPage/AddAccountPage';
 import HistoryPage from '../HistoryPage/HistoryPage';
 import AddMoneyPage from '../AddMoneyPage/AddMoneyPage';
+import ReminderPage from '../ReminderPage/ReminderPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -74,7 +75,7 @@ class App extends React.Component {
                                         <li><Link to="/">Trang chủ</Link></li>
                                         <li><Link to="/transfer">Chuyển tiền</Link></li>
                                         <li><Link to="/history">Lịch sử</Link></li>
-                                        <li><a href="#contact">Danh sách thụ hưởng</a></li>
+                                        <li><Link to="/reminder">Danh sách thụ hưởng</Link></li>
                                     </div>
                                 }
                                 <li style={{ float: 'right' }}><Link to="/login">Đăng xuất</Link></li>
@@ -86,6 +87,7 @@ class App extends React.Component {
                                 <PrivateRoute exact path="/" component={HomePage} />
                                 <PrivateRoute exact path="/transfer" component={TransferPage} />
                                 <PrivateRoute exact path="/history" component={HistoryPage} />
+                                <PrivateRoute exact path="/reminder" component={ReminderPage} />
                                 <Route path="/login" component={LoginPage} />
                                 <Route path="/signup" component={SignupPage} />
                                 <StaffRoute path="/adduser" component={AddUserPage} />

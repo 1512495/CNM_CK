@@ -15,7 +15,7 @@ module.exports = {
         })
     },
     detail: (req, res) => {
-        let sql = 'SELECT * FROM account WHERE user_id = ?'
+        let sql = 'SELECT * FROM account WHERE user_id = ? and (is_deleted <> 1 or is_deleted is null)'
         db.query(sql, [req.params.accountId], (err, response) => {
             if (err) throw err
             res.json(response)
@@ -39,7 +39,7 @@ module.exports = {
         })
     },
     delete: (req, res) => {
-        let sql = 'DELETE FROM account WHERE id = ?'
+        let sql = 'UPDATE account SET is_deleted = 1 WHERE account_number = ?'
         db.query(sql, [req.params.accountId], (err, response) => {
             if (err) throw err
             res.json({ message: 'Delete success!' })
