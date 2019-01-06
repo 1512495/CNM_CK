@@ -24,7 +24,7 @@ module.exports = {
     update: (req, res) => {
         let data = req.body;
         let accountId = req.params.accountId;
-        let sql = 'UPDATE account SET ? WHERE id = ?'
+        let sql = 'UPDATE account SET ? WHERE account_number = ?'
         db.query(sql, [data, accountId], (err, response) => {
             if (err) throw err
             res.json({ message: 'Update success!' })
@@ -46,7 +46,7 @@ module.exports = {
         })
     },
     getByAccountNumber: (req, res) => {
-        let sql = 'SELECT DISTINCT name, user_id, email FROM account JOIN user WHERE account_number = ? AND user_id = user.id'
+        let sql = 'SELECT DISTINCT name, user_id, email, balance FROM account JOIN user WHERE account_number = ? AND user_id = user.id'
         db.query(sql, [req.params.account_number], (err, response) => {
             if (err) throw err
             res.json(response)

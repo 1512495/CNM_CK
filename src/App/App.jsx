@@ -15,6 +15,7 @@ import ListUserPage from '../ListUserPage/ListUserPage';
 import AddUserPage from '../AddUserPage/AddUserPage';
 import ListAccountPage from '../ListAccountPage/ListAccountPage';
 import AddAccountPage from '../AddAccountPage/AddAccountPage';
+import HistoryPage from '../HistoryPage/HistoryPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -71,8 +72,8 @@ class App extends React.Component {
                                     <div>
                                         <li><Link to="/">Trang chủ</Link></li>
                                         <li><Link to="/transfer">Chuyển tiền</Link></li>
-                                        <li><a href="#contact">Danh sách người nhận</a></li>
-                                        <li><a href="#contact">Lịch sử</a></li>
+                                        <li><Link to="/history">Lịch sử</Link></li>
+                                        <li><a href="#contact">Danh sách thụ hưởng</a></li>
                                     </div>
                                 }
                                 <li style={{ float: 'right' }}><Link to="/login">Đăng xuất</Link></li>
@@ -83,6 +84,7 @@ class App extends React.Component {
                             <Switch>
                                 <PrivateRoute exact path="/" component={HomePage} />
                                 <PrivateRoute exact path="/transfer" component={TransferPage} />
+                                <PrivateRoute exact path="/history" component={HistoryPage} />
                                 <Route path="/login" component={LoginPage} />
                                 <Route path="/signup" component={SignupPage} />
                                 <StaffRoute path="/adduser" component={AddUserPage} />

@@ -1,11 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { fetchAccountList } from '../_actions/account.actions';
+import { fetchHistoryList } from '../_actions/history.actions';
 import ReactTable from 'react-table';
 
-class HomePage extends React.Component {
+class HistoryPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,14 +18,14 @@ class HomePage extends React.Component {
         console.log(token);
         await this.setState({ token: token });
         setTimeout(() => {
-            this.props.fetchAccountList(this.state.user.id, this.state.token);
+            this.props.fetchHistoryList(this.state.user.id, this.state.token);
         }, 500)
 
     }
 
     componentWillReceiveProps(next) {
-        this.accountList = next.accountList;
-        console.log(this.accountList);
+        this.historyList = next.historyList;
+        console.log(this.historyList);
     }
 
     accountDetail(account) {
@@ -35,22 +34,25 @@ class HomePage extends React.Component {
 
     render() {
         const columns = [{
-            Header: 'Số tài khoản',
-            accessor: 'account_number' // String-based value accessors!
+            Header: 'Tài khoản nguồn',
+            accessor: 'from_account' // String-based value accessors!
         }, {
-            Header: 'Số dư hiện tại',
-            accessor: 'balance',
-            Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
+            Header: 'Tài khoản đích',
+            accessor: 'to_account',
+        },
+        {
+            Header: 'Số tiền',
+            accessor: 'amount',
         }]
         return (
             <div >
                 <h1>Xin chào {this.state.user.name}!</h1>
-                {!this.accountList &&<div>
+                {!this.historyList && <div>
                     Đang lấy dữ liệu, vui lòng chờ
                 </div>}
-                {this.accountList &&
+                {this.historyList &&
                     <div>
-                        <h3>Tài khoản của bạn: (Nhấn vào để xem lịch sử)</h3>
+                        <h3>Lịch sử giao dịch của bạn: </h3>
                         <ReactTable
                             getTdProps={(state, rowInfo, column, instance) => {
                                 return {
@@ -63,7 +65,7 @@ class HomePage extends React.Component {
                                     }
                                 };
                             }}
-                            data={this.accountList}
+                            data={this.historyList}
                             columns={columns}
                         />
                     </div>
@@ -75,7 +77,7 @@ class HomePage extends React.Component {
 
 function bindAction(dispatch) {
     return {
-        fetchAccountList: (id, token) => dispatch(fetchAccountList(id, token)),
+        fetchHistoryList: (id, token) => dispatch(fetchHistoryList(id, token)),
     }
 }
 
@@ -83,8 +85,8 @@ function mapStateToProps(state) {
     return {
         user: state.authentication.user,
         users: state.users,
-        accountList: state.accountList.list
+        historyList: state.historyList.list
     };
 }
 
-export default connect(mapStateToProps, bindAction)(HomePage);
+export default connect(mapStateToProps, bindAction)(HistoryPage);
