@@ -16,6 +16,7 @@ import AddUserPage from '../AddUserPage/AddUserPage';
 import ListAccountPage from '../ListAccountPage/ListAccountPage';
 import AddAccountPage from '../AddAccountPage/AddAccountPage';
 import HistoryPage from '../HistoryPage/HistoryPage';
+import AddMoneyPage from '../AddMoneyPage/AddMoneyPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -91,6 +92,7 @@ class App extends React.Component {
                                 <StaffRoute path="/addAccount" component={AddAccountPage} />
                                 <StaffRoute path="/listAccount" component={ListAccountPage} />
                                 <StaffRoute path="/listUserPage" component={ListUserPage} />
+                                <StaffRoute path="/addMoney" component={AddMoneyPage} />
                                 <Route component={NotFoundPage} />
                             </Switch>
                         </div>

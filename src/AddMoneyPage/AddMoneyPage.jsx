@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 
 import {accountActions} from '../_actions';
 
-class AddAccountPage extends React.Component {
+class AddMoneyPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             userId: '',
+            add_money: '',
             account_number: '',
             balance: '',
             submitted: false
@@ -17,8 +18,14 @@ class AddAccountPage extends React.Component {
     }
 
     async componentDidMount() {
+        let account_number = this.props.location.state.account_number;
+        let balance = this.props.location.state.balance;
         let userId = this.props.location.state.userId;
-        await this.setState({ userId: userId });
+        await this.setState({ 
+            account_number: account_number,
+            balance: balance,
+            userId: userId
+        });
     }
 
     handleChange(e) {
@@ -30,39 +37,37 @@ class AddAccountPage extends React.Component {
         e.preventDefault();
 
         this.setState({ submitted: true });
-        const { userId, account_number, balance } = this.state;
+        const { userId, account_number, balance, add_money } = this.state;
         const { dispatch } = this.props;
-        if (account_number.length >= 10 && balance) {
-            dispatch(accountActions.signup(userId, account_number, balance));
+        if (add_money) {
+            dispatch(accountActions.addMoney(userId, account_number, balance, add_money));
         }
     }
 
     render() {
         const { signingIn } = this.props;
-        const { account_number, balance, submitted } = this.state;
+        const { account_number, balance, add_money, submitted } = this.state;
         return (
             <div className="col-md-6 col-md-offset-3">
-                <h2>New Account</h2>
+                <h2>Add Money To Account</h2> <br/>
                 <form name="form" onSubmit={(e) => this.handleSubmit(e)}>
-                    <div className={'form-group' + (((submitted && !account_number) || (submitted && account_number.length < 10)) ? ' has-error' : '')}>
+                    <div className='form-group'>
                         <label htmlFor="account_number">Account Number</label>
-                        <input type="text" className="form-control" name="account_number" value={account_number} onChange={(e) => this.handleChange(e)} />
-                        {submitted && !account_number &&
-                            <div className="help-block">Account Number is required</div>
-                        }
-                        {submitted && account_number.length < 10 &&
-                            <div className="help-block">Account Number at least 10 letters</div>
-                        }
+                        <input readOnly type="text" className="form-control" name="account_number" value={account_number} onChange={(e) => this.handleChange(e)} />
                     </div>
-                    <div className={'form-group' + (submitted && !balance ? ' has-error' : '')}>
+                    <div className='form-group'>
                         <label htmlFor="balance">Balance</label>
-                        <input type="text" className="form-control" name="balance" value={balance} onChange={(e) => this.handleChange(e)} />
-                        {submitted && !balance &&
-                            <div className="help-block">Balance is required</div>
+                        <input readOnly type="text" className="form-control" name="balance" value={balance} onChange={(e) => this.handleChange(e)} />
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor="add_money">Adding Money</label>
+                        <input type="text" className="form-control" name="add_money" value={add_money} onChange={(e) => this.handleChange(e)} />
+                        {submitted && !add_money &&
+                            <div className="help-block">Adding Money is required</div>
                         }
                     </div>
                     <div className="form-group">
-                        <button className="btn btn-primary">Add</button>
+                        <button className="btn btn-primary">Update Account</button>
                         {signingIn &&
                             <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                         }
@@ -80,4 +85,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(AddAccountPage);
+export default connect(mapStateToProps)(AddMoneyPage);

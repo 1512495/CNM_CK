@@ -5,6 +5,7 @@ import { history } from '../_helpers';
 
 export const accountActions = {
     signup,
+    addMoney
 };
 
 export function fetchAccountList(user_id, token) {
@@ -37,6 +38,30 @@ function signup(userId, account_number, balance) {
         dispatch(request({ userId }));
 
         accountService.signup(userId, account_number, balance)
+            .then(
+                account => {
+                    dispatch(success(account));
+                    history.push({
+                        pathname: '/listAccount',  
+                        state: { userId: userId } 
+                    });
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+    function request(account) { return { type: userConstants.SIGNUP_REQUEST, account } }
+    function success(account) { return { type: userConstants.SIGNUP_SUCCESS, account } }
+    function failure(error) { return { type: userConstants.SIGNUP_FAILURE, error } }
+}
+
+function addMoney(userId, account_number, balance, add_money) {
+    return dispatch => {
+        dispatch(request({ account_number }));
+
+        accountService.addMoney(account_number, balance, add_money)
             .then(
                 account => {
                     dispatch(success(account));

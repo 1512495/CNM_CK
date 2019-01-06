@@ -16,7 +16,6 @@ class ListAccountPage extends React.Component {
 
     async componentDidMount() {
         let userId = this.props.location.state.userId;
-        console.log('UserId: ' + userId);
         let token = await JSON.parse(localStorage.getItem('token'));
         console.log(token);
         await this.setState({ token: token, userId: userId });
@@ -32,7 +31,15 @@ class ListAccountPage extends React.Component {
     }
 
     accountDetail(account) {
-        console.log(account);
+        console.log(account.original.account_number);
+        this.props.history.push({
+            pathname: '/addMoney',
+            state: { 
+                account_number: account.original.account_number,
+                balance: account.original.balance,
+                userId: account.original.user_id
+            }
+        });
     }
 
     goToAddAccount() {
