@@ -5,6 +5,8 @@ module.exports = function (app) {
     var accountController = require('./controllers/AccountController');
     var reminderController = require('./controllers/ReminderController');
     var transactionController = require('./controllers/TransactionController');
+    var OTPController = require('./controllers/OTPController');
+
 
     app.route('/user/login')
         .post(userController.login);
@@ -60,8 +62,6 @@ module.exports = function (app) {
 
 
 
-
-
     app.route('/user')
         .get(userController.loginRequired, userController.get)
         .post(userController.store);
@@ -71,4 +71,7 @@ module.exports = function (app) {
         .get(userController.detail)
         .put(userController.update)
         .delete(userController.delete);
+
+    app.route('/otp').post(OTPController.post);
+    app.route('/confirm/:otp').post(OTPController.confirm);
 }

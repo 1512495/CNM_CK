@@ -22,6 +22,9 @@ class TransferPage extends React.Component {
             content: '',
             to_account_balance: '',
             fee_from_user: false,
+            OTP: '',
+            isOTPShow: false,
+            isDisabled: false,
         };
         this.accountList = [];
         this.reminderList = [];
@@ -53,13 +56,73 @@ class TransferPage extends React.Component {
     handleChange(e) {
         const { name, value } = e.target;
         this.setState({ [name]: value });
+        if (this.state.OTP) {
+            this.setState({ isDisabled: false });
+        }
     }
 
     handleSubmit(e) {
         e.preventDefault();
 
         this.setState({ submitted: true });
-        this.transfer();
+        if (!this.state.account_number || !this.state.amount || !this.state.value || !this.state.source) {
+            alert("Vui lòng nhập đầy đủ thông tin!!");
+        } else {
+            if (this.state.isOTPShow == true) {
+                fetch(`${config.apiUrl}/confirm/` + this.state.OTP, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'JWT ' + this.token,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                }).then((response) => {
+                    if (response.status == 200) {
+                        response.json().then(resJSON => {
+                            if (resJSON.status == "ok") {
+                                this.transfer();
+                            } else {
+                                alert("Mã OTP của bạn sai hoặc quá hạn, vui lòng thử lại!")
+                            }
+                        })
+                    }
+                    else { return; }
+                }).catch(error => console.log(error));
+            }
+            else {
+                this.showOTP();
+            }
+        }
+        // this.transfer();
+    }
+
+    showOTP() {
+        let data = {
+            name: this.state.user.name,
+            email: this.state.user.email,
+            from_account: this.state.source,
+            to_account: this.state.account_number,
+            amount: this.state.amount,
+            content: this.state.content,
+            fee_from_user: this.state.fee_from_user
+        };
+        this.setState({ isDisabled: true, isOTPShow: true });
+        fetch(`${config.apiUrl}/otp/`, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'JWT ' + this.token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        }).then((response) => {
+            if (response.status == 200) {
+                response.json().then(resJSON => {
+                    alert('Đã gửi email xác nhận!')
+                })
+            }
+            else { return; }
+        }).catch(error => console.log(error));
     }
 
     transfer() {
@@ -82,6 +145,8 @@ class TransferPage extends React.Component {
             if (response.status == 200) {
                 response.json().then(resJSON => {
                     console.log(resJSON);
+                    alert("Chuyển tiền thành công!");
+                    location.reload();
                 })
             }
             else { return; }
@@ -157,12 +222,12 @@ class TransferPage extends React.Component {
 
     render() {
         const { signingIn } = this.props;
-        const { account_number, name, submitted, amount, content, value, fee_from_user } = this.state;
+        const { account_number, name, submitted, amount, content, value, fee_from_user, OTP } = this.state;
 
         return (
 
             <div className="col-md-6 col-md-offset-3">
-                <div style={{ textAlign: 'center', margin: '10px'}}>
+                <div style={{ textAlign: 'center', margin: '10px' }}>
                     <h2>Chuyển tiền</h2>
                 </div>
                 <form name="form" onSubmit={(e) => this.handleSubmit(e)}>
@@ -190,8 +255,8 @@ class TransferPage extends React.Component {
                     </div>
                     <div className={'form-group' + (submitted && !account_number ? ' has-error' : '')}>
                         <label htmlFor="account_number">Số tài khoản nhận tiền</label>
-                        <div style={{display: 'grid', gridTemplateColumns: '8fr 1fr'}}>
-                            <input style={{width: '95%'}} type="text" className="form-control" name="account_number" value={account_number} onChange={(e) => this.handleChange(e)} />
+                        <div style={{ display: 'grid', gridTemplateColumns: '8fr 1fr' }}>
+                            <input style={{ width: '95%' }} type="text" className="form-control" name="account_number" value={account_number} onChange={(e) => this.handleChange(e)} />
                             <button className="btn btn-default" title="Xem thông tin tài khoản" onClick={(e) => this.fetchAccount(e)}><i className="glyphicon glyphicon-info-sign" /></button>
                         </div>
                         {submitted && !account_number &&
@@ -214,11 +279,16 @@ class TransferPage extends React.Component {
                         <textarea className="form-control" name="content" value={content} onChange={(e) => this.handleChange(e)} />
                     </div>
                     <div className="form-check">
-                    <input type="checkbox" className="form-check-input" name="fee" value={fee_from_user} onChange={() => { this.setState({ fee_from_user: !fee_from_user }) }} />
+                        <input type="checkbox" className="form-check-input" name="fee" value={fee_from_user} onChange={() => { this.setState({ fee_from_user: !fee_from_user }) }} />
                         <label htmlFor="fee">&nbsp;&nbsp;Người chuyển chịu phí</label>
                     </div>
+                    {this.state.isOTPShow &&
+                        <div className='form-group' >
+                            <label htmlFor="OTP">Mã OTP từ mail</label>
+                            <input type="text" className="form-control" name="OTP" value={OTP} onChange={(e) => this.handleChange(e)} />
+                        </div>}
                     <div className="form-group" style={{ margin: '25px 0px' }}>
-                        <button className="btn btn-primary" style={{width: '100%'}}>Chuyển tiền</button>
+                        <button className="btn btn-primary" style={{ width: '100%' }} disabled={this.state.isDisabled}>Chuyển tiền</button>
                         {signingIn &&
                             <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                         }
