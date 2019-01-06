@@ -98,7 +98,7 @@ class SignupPage extends React.Component {
                     </div>
                 </form>
                 <div style={{ textAlign: 'center' }}>
-                <button className="btn btn-default" onClick={() => this.goToLogin()} style={{width: '100%'}}><span className="glyphicon glyphicon-arrow-left" />&nbsp; Back to login</button>
+                <button className="btn btn-default" onClick={() => this.goToLogin()} style={{width: '100%'}}><span className="glyphicon glyphicon-arrow-left" />&nbsp; Đăng nhập ngay</button>
                 </div>
             </div>
         );
