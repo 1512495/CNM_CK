@@ -5,6 +5,8 @@ import { users, userList } from './users.reducer';
 import { alert } from './alert.reducer';
 import { accountList } from './account.reducer';
 import { reminderList } from './reminder.reducer';
+import { historyList } from './history.reducer';
+
 
 
 const rootReducer = combineReducers({
@@ -13,7 +15,8 @@ const rootReducer = combineReducers({
   alert,
   accountList,
   userList,
-  reminderList
+  reminderList,
+  historyList
 });
 
 export default rootReducer;

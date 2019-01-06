@@ -20,6 +20,7 @@ class TransferPage extends React.Component {
             value: '',
             amount: 0,
             content: '',
+            to_account_balance: '',
             fee_from_user: false,
         };
         this.accountList = [];
@@ -85,6 +86,46 @@ class TransferPage extends React.Component {
             }
             else { return; }
         }).catch(error => console.log(error));
+
+        let dataSource = {
+            balance: (parseFloat(this.state.value) - parseFloat(this.state.amount)).toString()
+        };
+        let dataTo = {
+            balance: (parseFloat(this.state.to_account_balance) + parseFloat(this.state.amount)).toString()
+        };
+
+        fetch(`${config.apiUrl}/account/` + this.state.source, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'JWT ' + this.token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataSource)
+        }).then((response) => {
+            if (response.status == 200) {
+                response.json().then(resJSON => {
+                    console.log(resJSON);
+                })
+            }
+            else { return; }
+        }).catch(error => console.log(error));
+        fetch(`${config.apiUrl}/account/` + this.state.account_number, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'JWT ' + this.token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataTo)
+        }).then((response) => {
+            if (response.status == 200) {
+                response.json().then(resJSON => {
+                    console.log(resJSON);
+                })
+            }
+            else { return; }
+        }).catch(error => console.log(error));
     }
 
 
@@ -101,6 +142,7 @@ class TransferPage extends React.Component {
                 response.json().then(resJSON => {
                     if (resJSON.length > 0) {
                         this.setState({ name: resJSON[0].name });
+                        this.setState({ to_account_balance: resJSON[0].balance });
                     }
                     else {
                         this.setState({ name: "Không có tài khoản nào" });

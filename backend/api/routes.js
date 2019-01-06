@@ -43,7 +43,7 @@ module.exports = function (app) {
 
     app.route('/reminder/:userId')
         .get(reminderController.get);
-        
+
     app.route('/reminder/:reminderId')
         .put(reminderController.update)
         .delete(reminderController.delete);
@@ -54,9 +54,12 @@ module.exports = function (app) {
         .post(transactionController.store);
 
     app.route('/transaction/:transactionId')
-        .get(transactionController.detail)
+        .get(transactionController.get_history)
         .put(transactionController.update)
         .delete(transactionController.delete);
+
+
+
 
 
     app.route('/user')
