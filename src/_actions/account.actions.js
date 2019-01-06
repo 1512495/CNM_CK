@@ -1,6 +1,7 @@
 import config from 'config';
 import { accountService } from '../_services';
 import { userConstants } from '../_constants';
+import { history } from '../_helpers';
 
 export const accountActions = {
     signup,
@@ -39,7 +40,10 @@ function signup(userId, account_number, balance) {
             .then(
                 account => {
                     dispatch(success(account));
-                    history.push('/listAccount');
+                    history.push({
+                        pathname: '/listAccount',  
+                        state: { userId: userId } 
+                    });
                 },
                 error => {
                     dispatch(failure(error));

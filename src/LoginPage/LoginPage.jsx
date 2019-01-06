@@ -94,7 +94,7 @@ class LoginPage extends React.Component {
                             <div className="help-block">Password is required</div>
                         }
                     </div>
-D
+
                     <ReCAPTCHA
                         ref={(el) => { this.recaptcha = el; }}
                         sitekey="6LdJB24UAAAAABTCJiRERbKstFsIfpiLoXurkUZS"
