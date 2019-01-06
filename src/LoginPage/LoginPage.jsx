@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
+import ReCAPTCHA from 'react-google-recaptcha'
 import { userActions } from '../_actions';
 import ToggleButton from 'react-toggle-button';
 
@@ -47,6 +47,12 @@ class LoginPage extends React.Component {
         this.props.history.push({ pathname: '/signup' });
     }
 
+    handleCaptchaResponseChange(response) {
+        this.setState({
+          recaptchaResponse: response,
+        });
+      }
+
     render() {
         const { loggingIn } = this.props;
         const { username, password, submitted } = this.state;
@@ -82,6 +88,11 @@ class LoginPage extends React.Component {
                             <div className="help-block">Password is required</div>
                         }
                     </div>
+                    <ReCAPTCHA
+                        ref={(el) => { this.recaptcha = el; }}
+                        sitekey="6LdJB24UAAAAABTCJiRERbKstFsIfpiLoXurkUZS"
+                        onChange={this.handleCaptchaResponseChange}
+                    />
                     <div className="form-group">
                         <button className="btn btn-primary">Login</button>
                         {loggingIn &&

@@ -33,7 +33,7 @@ class App extends React.Component {
         }
 
         this.isStaff = false;
-        if (history.location.pathname == '/listUserPage') {
+        if (history.location.pathname == '/listUserPage' || history.location.pathname == '/adduser' || history.location.pathname == '/addAccount' || history.location.pathname == '/listAccount') {
             this.isStaff = true;
         }
         else {
@@ -48,7 +48,7 @@ class App extends React.Component {
         else {
             this.isLogged = true;
         }
-        if (history.location.pathname == '/listUserPage') {
+        if (history.location.pathname == '/listUserPage' || history.location.pathname == '/adduser' || history.location.pathname == '/addAccount' || history.location.pathname == '/listAccount') {
             this.isStaff = true;
         }
         else {
@@ -85,9 +85,9 @@ class App extends React.Component {
                                 <PrivateRoute exact path="/transfer" component={TransferPage} />
                                 <Route path="/login" component={LoginPage} />
                                 <Route path="/signup" component={SignupPage} />
-                                <Route path="/adduser" component={AddUserPage} />
-                                <Route path="/addAccount" component={AddAccountPage} />
-                                <Route path="/listAccount" component={ListAccountPage} />
+                                <StaffRoute path="/adduser" component={AddUserPage} />
+                                <StaffRoute path="/addAccount" component={AddAccountPage} />
+                                <StaffRoute path="/listAccount" component={ListAccountPage} />
                                 <StaffRoute path="/listUserPage" component={ListUserPage} />
                                 <Route component={NotFoundPage} />
                             </Switch>
