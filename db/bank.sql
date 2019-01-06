@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `account` (
   `user_id` int(11) NOT NULL,
   `account_number` varchar(512) COLLATE utf16_unicode_ci NOT NULL,
   `balance` bigint(20) NOT NULL,
+  `is_deleted` int(11) NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_unicode_ci;
 
