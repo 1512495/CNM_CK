@@ -57,16 +57,22 @@ class LoginPage extends React.Component {
                     Username: user<br />
                     Password: user
                 </div>
-                <h2>Login</h2>
-                <ToggleButton
-                    inactiveLabel={'User'}
-                    activeLabel={'Staff'}
-                    value={this.state.isStaff}
-                    onToggle={(value) => {
-                        this.setState({
-                            isStaff: !value,
-                        })
+                <div style={{ textAlign: 'center' }}>
+                    <h2>Login</h2>
+                </div>
+                <div style={{ float: 'right' }}>
+                    <ToggleButton
+                        inactiveLabel={'User'}
+                        activeLabel={'Staff'}
+                        value={this.state.isStaff}
+                        onToggle={(value) => {
+                            this.setState({
+                                isStaff: !value,
+                            })
                     }} />
+                </div>
+                <br />
+                <br />
                 <form name="form" onSubmit={(e) => this.handleSubmit(e)}>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
                         <label htmlFor="username">Username</label>
@@ -82,14 +88,17 @@ class LoginPage extends React.Component {
                             <div className="help-block">Password is required</div>
                         }
                     </div>
+                    <br />
+                    <div style={{ textAlign: 'center' }}>
                     <div className="form-group">
-                        <button className="btn btn-primary">Login</button>
+                        <button className="btn btn-primary" style={{ width: '100%' }}>Login</button>
                         {loggingIn &&
                             <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                         }
                     </div>
+                    </div>
                 </form>
-                <button className="btn btn-default" onClick={() => this.goToSignup()}>Sign Up now!</button>
+                <button className="btn btn-default" onClick={() => this.goToSignup()} style={{ width: '100%' }}>Sign Up now!</button>
             </div>
         );
     }
