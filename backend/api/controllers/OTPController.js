@@ -9,7 +9,8 @@ var transporter = nodemailer.createTransport({
     auth: {
         user: 'mrkettr10',
         pass: 'tan123456'
-    }
+    },
+    tls: { rejectUnauthorized: false },
 });
 
 module.exports = {
