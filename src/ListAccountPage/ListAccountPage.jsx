@@ -69,7 +69,7 @@ class ListAccountPage extends React.Component {
                 {this.accountList &&
                     <div>
                         <h3>Tên tài khoản:  {this.state.name}</h3><br/>
-                        <button className="btn btn-success" onClick={() => this.goToAddAccount()}>Add Account</button>
+                        <button className="btn btn-success" onClick={() => this.goToAddAccount()}>Thêm tài khoản</button>
                         <br/>
                         <ReactTable
                             getTdProps={(state, rowInfo, column, instance) => {

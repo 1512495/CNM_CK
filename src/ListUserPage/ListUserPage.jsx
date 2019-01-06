@@ -71,7 +71,7 @@ class ListUserPage extends React.Component {
                 {this.userList &&
                     <div>
                         <h3>Danh sách User:</h3>
-                        <button className="btn btn-success" onClick={() => this.goToAddUser()}>Add User</button>
+                        <button className="btn btn-success" onClick={() => this.goToAddUser()}>Thêm User</button>
                         <ReactTable
                             getTdProps={(state, rowInfo, column, instance) => {
                                 return {
