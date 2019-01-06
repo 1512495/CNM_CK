@@ -32,7 +32,7 @@ class AddAccountPage extends React.Component {
         this.setState({ submitted: true });
         const { userId, account_number, balance } = this.state;
         const { dispatch } = this.props;
-        if (account_number && balance) {
+        if (account_number.length >= 10 && balance) {
             dispatch(accountActions.signup(userId, account_number, balance));
         }
     }
@@ -44,11 +44,14 @@ class AddAccountPage extends React.Component {
             <div className="col-md-6 col-md-offset-3">
                 <h2>Sign up</h2>
                 <form name="form" onSubmit={(e) => this.handleSubmit(e)}>
-                    <div className={'form-group' + (submitted && !account_number ? ' has-error' : '')}>
+                    <div className={'form-group' + (((submitted && !account_number) || (submitted && account_number.length < 10)) ? ' has-error' : '')}>
                         <label htmlFor="account_number">Account Number</label>
                         <input type="text" className="form-control" name="account_number" value={account_number} onChange={(e) => this.handleChange(e)} />
                         {submitted && !account_number &&
                             <div className="help-block">Account Number is required</div>
+                        }
+                        {submitted && account_number.length < 10 &&
+                            <div className="help-block">Account Number at least 10 letters</div>
                         }
                     </div>
                     <div className={'form-group' + (submitted && !balance ? ' has-error' : '')}>
