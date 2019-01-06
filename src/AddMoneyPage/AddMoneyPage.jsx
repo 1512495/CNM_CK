@@ -33,6 +33,13 @@ class AddMoneyPage extends React.Component {
         this.setState({ [name]: value });
     }
 
+    handleChangeNumber(e) {
+        const add_money = (e.target.validity.valid) ? e.target.value : this.state.add_money;
+        this.setState({ 
+            add_money: add_money
+         });
+    }
+
     handleSubmit(e) {
         e.preventDefault();
 
@@ -61,7 +68,7 @@ class AddMoneyPage extends React.Component {
                     </div>
                     <div className='form-group'>
                         <label htmlFor="add_money">Adding Money</label>
-                        <input type="text" className="form-control" name="add_money" value={add_money} onChange={(e) => this.handleChange(e)} />
+                        <input type="text" pattern="[0-9]*" className="form-control" name="add_money" value={add_money} onChange={(e) => this.handleChangeNumber(e)} />
                         {submitted && !add_money &&
                             <div className="help-block">Adding Money is required</div>
                         }

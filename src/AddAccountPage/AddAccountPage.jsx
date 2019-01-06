@@ -26,6 +26,20 @@ class AddAccountPage extends React.Component {
         this.setState({ [name]: value });
     }
 
+    handleChangeNumber(e) {
+        const account_number = (e.target.validity.valid) ? e.target.value : this.state.account_number;
+        this.setState({ 
+            account_number: account_number
+         });
+    }
+
+    handleChangeBalance(e) {
+        const balance = (e.target.validity.valid) ? e.target.value : this.state.balance;
+        this.setState({ 
+            balance: balance
+         });
+    }
+
     handleSubmit(e) {
         e.preventDefault();
 
@@ -42,11 +56,11 @@ class AddAccountPage extends React.Component {
         const { account_number, balance, submitted } = this.state;
         return (
             <div className="col-md-6 col-md-offset-3">
-                <h2>New Account</h2>
+                <h2>New Account</h2><br/>
                 <form name="form" onSubmit={(e) => this.handleSubmit(e)}>
                     <div className={'form-group' + (((submitted && !account_number) || (submitted && account_number.length < 10)) ? ' has-error' : '')}>
                         <label htmlFor="account_number">Account Number</label>
-                        <input type="text" className="form-control" name="account_number" value={account_number} onChange={(e) => this.handleChange(e)} />
+                        <input type="text" pattern="[0-9]*" className="form-control" name="account_number" value={account_number} onChange={(e) => this.handleChangeNumber(e)} />
                         {submitted && !account_number &&
                             <div className="help-block">Account Number is required</div>
                         }
@@ -56,7 +70,7 @@ class AddAccountPage extends React.Component {
                     </div>
                     <div className={'form-group' + (submitted && !balance ? ' has-error' : '')}>
                         <label htmlFor="balance">Balance</label>
-                        <input type="text" className="form-control" name="balance" value={balance} onChange={(e) => this.handleChange(e)} />
+                        <input type="text" pattern="[0-9]*" className="form-control" name="balance" value={balance} onChange={(e) => this.handleChangeBalance(e)} />
                         {submitted && !balance &&
                             <div className="help-block">Balance is required</div>
                         }

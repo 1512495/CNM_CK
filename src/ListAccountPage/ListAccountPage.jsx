@@ -10,15 +10,17 @@ class ListAccountPage extends React.Component {
         super(props);
         this.state = {
             userId: '',
+            name: '',
             token: '',
         };
     }
 
     async componentDidMount() {
         let userId = this.props.location.state.userId;
+        let name = this.props.location.state.name;
         let token = await JSON.parse(localStorage.getItem('token'));
         console.log(token);
-        await this.setState({ token: token, userId: userId });
+        await this.setState({ token: token, userId: userId, name: name });
         setTimeout(() => {
             this.props.fetchAccountList(this.state.userId, this.state.token);
         }, 500)
@@ -66,8 +68,9 @@ class ListAccountPage extends React.Component {
                 </div>}
                 {this.accountList &&
                     <div>
-                        <h3>Tài khoản của :</h3>
+                        <h3>Tên tài khoản:  {this.state.name}</h3><br/>
                         <button className="btn btn-success" onClick={() => this.goToAddAccount()}>Add Account</button>
+                        <br/>
                         <ReactTable
                             getTdProps={(state, rowInfo, column, instance) => {
                                 return {

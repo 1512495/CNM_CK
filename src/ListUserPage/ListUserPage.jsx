@@ -31,11 +31,14 @@ class ListUserPage extends React.Component {
     }
 
     userDetail(user) {
-        console.log(user.original.id);
+        console.log(user);
         this.props.history.push({
             pathname: '/listAccount',
-            state: { userId: user.original.id }
-          });
+            state: { 
+                userId: user.original.id,
+                name: user.original.name
+            }
+        });
     }
 
     goToAddUser() {

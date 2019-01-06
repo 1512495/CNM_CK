@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import { userActions } from '../_actions';
 
 class AddUserPage extends React.Component {
@@ -22,6 +21,11 @@ class AddUserPage extends React.Component {
     handleChange(e) {
         const { name, value } = e.target;
         this.setState({ [name]: value });
+    }
+
+    handleChangeNumber(e) {
+        const phone = (e.target.validity.valid) ? e.target.value : this.state.phone;
+        this.setState({ phone: phone });
     }
 
     handleSubmit(e) {
@@ -65,7 +69,7 @@ class AddUserPage extends React.Component {
                     </div>
                     <div className={'form-group' + (submitted && !phone ? ' has-error' : '')}>
                         <label htmlFor="phone">Phone</label>
-                        <input type="text" className="form-control" name="phone" value={phone} onChange={(e) => this.handleChange(e)} />
+                        <input type="text" pattern="[0-9]*" className="form-control" name="phone" value={phone} onChange={(e) => this.handleChangeNumber(e)} />
                         {submitted && !phone &&
                             <div className="help-block">Phone is required</div>
                         }
