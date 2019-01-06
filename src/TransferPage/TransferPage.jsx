@@ -162,7 +162,9 @@ class TransferPage extends React.Component {
         return (
 
             <div className="col-md-6 col-md-offset-3">
-                <h2>Chuyển tiền</h2>
+                <div style={{ textAlign: 'center', margin: '10px'}}>
+                    <h2>Chuyển tiền</h2>
+                </div>
                 <form name="form" onSubmit={(e) => this.handleSubmit(e)}>
                     <div className="form-group">
                         <label htmlFor="source">Tài khoản nguồn:</label>
@@ -188,13 +190,13 @@ class TransferPage extends React.Component {
                     </div>
                     <div className={'form-group' + (submitted && !account_number ? ' has-error' : '')}>
                         <label htmlFor="account_number">Số tài khoản nhận tiền</label>
-                        <input type="text" className="form-control" name="account_number" value={account_number} onChange={(e) => this.handleChange(e)} />
+                        <div style={{display: 'grid', gridTemplateColumns: '8fr 1fr'}}>
+                            <input style={{width: '95%'}} type="text" className="form-control" name="account_number" value={account_number} onChange={(e) => this.handleChange(e)} />
+                            <button className="btn btn-default" title="Xem thông tin tài khoản" onClick={(e) => this.fetchAccount(e)}><i className="glyphicon glyphicon-info-sign" /></button>
+                        </div>
                         {submitted && !account_number &&
-                            <div className="help-block">Account number is required</div>
+                            <div className="help-block">Số tài khoản không được để trống</div>
                         }
-                        <button className="btn btn-primary" onClick={(e) => this.fetchAccount(e)}>
-                            Truy vấn thông tin
-                        </button>
                     </div>
                     <div className='form-group' >
                         <label htmlFor="name">Tên người thụ hưởng</label>
@@ -212,11 +214,11 @@ class TransferPage extends React.Component {
                         <textarea className="form-control" name="content" value={content} onChange={(e) => this.handleChange(e)} />
                     </div>
                     <div className="form-check">
-                        <label htmlFor="fee">Người chuyển chịu phí</label>
-                        <input type="checkbox" className="form-check-input" className="form-control" name="fee" value={fee_from_user} onChange={() => { this.setState({ fee_from_user: !fee_from_user }) }} />
+                    <input type="checkbox" className="form-check-input" name="fee" value={fee_from_user} onChange={() => { this.setState({ fee_from_user: !fee_from_user }) }} />
+                        <label htmlFor="fee">&nbsp;&nbsp;Người chuyển chịu phí</label>
                     </div>
-                    <div className="form-group">
-                        <button className="btn btn-primary">Chuyển tiền</button>
+                    <div className="form-group" style={{ margin: '25px 0px' }}>
+                        <button className="btn btn-primary" style={{width: '100%'}}>Chuyển tiền</button>
                         {signingIn &&
                             <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                         }
