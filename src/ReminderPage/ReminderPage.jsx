@@ -28,8 +28,24 @@ class ReminderPage extends React.Component {
         console.log(this.reminderList);
     }
 
-    accountDetail(account) {
-        console.log(account);
+    reminderDetail(reminder) {
+        this.props.history.push({ 
+            pathname: '/updateReminder',
+            state: { 
+                account_number: reminder.original.account_number,
+                reminder_name: reminder.original.reminder_name
+            }
+        });
+
+    }
+
+    goToAddReminder() {
+        this.props.history.push({ 
+            pathname: '/addReminder',
+            state: { 
+                userId: this.state.user.id
+            }
+        });
     }
 
     render() {
@@ -47,7 +63,7 @@ class ReminderPage extends React.Component {
                 {!this.reminderList && <div>
                     Đang lấy dữ liệu, vui lòng chờ
                 </div>}
-                <button>Thêm tài khoản mới</button>
+                <button onClick={() => this.goToAddReminder()}>Thêm tài khoản mới</button>
                 {this.reminderList &&
                     <div>
                         <h3>Danh sách tài khoản đã lưu của bạn: </h3>
@@ -58,7 +74,7 @@ class ReminderPage extends React.Component {
                                         console.log("info", rowInfo);
 
                                         if (handleOriginal) {
-                                            this.accountDetail(rowInfo);
+                                            this.reminderDetail(rowInfo);
                                         }
                                     }
                                 };

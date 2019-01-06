@@ -18,6 +18,10 @@ import AddAccountPage from '../AddAccountPage/AddAccountPage';
 import HistoryPage from '../HistoryPage/HistoryPage';
 import AddMoneyPage from '../AddMoneyPage/AddMoneyPage';
 import ReminderPage from '../ReminderPage/ReminderPage';
+import AddReminderPage from '../AddReminderPage/AddReminderPage';
+import UpdateReminderPage from '../UpdateReminderPage/UpdateReminderPage';
+
+
 
 class App extends React.Component {
     constructor(props) {
@@ -88,6 +92,8 @@ class App extends React.Component {
                                 <PrivateRoute exact path="/transfer" component={TransferPage} />
                                 <PrivateRoute exact path="/history" component={HistoryPage} />
                                 <PrivateRoute exact path="/reminder" component={ReminderPage} />
+                                <PrivateRoute exact path="/addReminder" component={AddReminderPage} />
+                                <PrivateRoute exact path="/updateReminder" component={UpdateReminderPage} />
                                 <Route path="/login" component={LoginPage} />
                                 <Route path="/signup" component={SignupPage} />
                                 <StaffRoute path="/adduser" component={AddUserPage} />

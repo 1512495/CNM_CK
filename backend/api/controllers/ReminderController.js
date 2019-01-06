@@ -23,9 +23,9 @@ module.exports = {
     },
     update: (req, res) => {
         let data = req.body;
-        let reminderId = req.params.reminderId;
-        let sql = 'UPDATE reminder SET ? WHERE id = ?'
-        db.query(sql, [data, reminderId], (err, response) => {
+        let account_number = req.params.account_number;
+        let sql = 'UPDATE reminder SET ? WHERE account_number = ?'
+        db.query(sql, [data, account_number], (err, response) => {
             if (err) throw err
             res.json({ message: 'Update success!' })
         })
@@ -39,8 +39,8 @@ module.exports = {
         })
     },
     delete: (req, res) => {
-        let sql = 'DELETE FROM reminder WHERE id = ?'
-        db.query(sql, [req.params.reminderId], (err, response) => {
+        let sql = 'DELETE FROM reminder WHERE account_number = ?'
+        db.query(sql, [req.params.account_number], (err, response) => {
             if (err) throw err
             res.json({ message: 'Delete success!' })
         })

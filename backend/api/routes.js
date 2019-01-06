@@ -46,7 +46,7 @@ module.exports = function (app) {
     app.route('/reminder/:userId')
         .get(userController.loginRequired, reminderController.get);
 
-    app.route('/reminder/:reminderId')
+    app.route('/reminder/:account_number')
         .put(userController.loginRequired, reminderController.update)
         .delete(userController.loginRequired, reminderController.delete);
 

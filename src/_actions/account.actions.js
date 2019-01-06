@@ -2,10 +2,14 @@ import config from 'config';
 import { accountService } from '../_services';
 import { userConstants } from '../_constants';
 import { history } from '../_helpers';
+import { alertActions } from '../_actions/alert.actions'
 
 export const accountActions = {
     signup,
-    addMoney
+    addMoney,
+    addReminder,
+    updateReminder,
+    deleteReminder
 };
 
 export function fetchAccountList(user_id, token) {
@@ -78,5 +82,75 @@ function addMoney(userId, account_number, balance, add_money, token) {
     };
     function request(account) { return { type: userConstants.SIGNUP_REQUEST, account } }
     function success(account) { return { type: userConstants.SIGNUP_SUCCESS, account } }
+    function failure(error) { return { type: userConstants.SIGNUP_FAILURE, error } }
+}
+
+function addReminder(userId, name, account_number, reminder_name, token) {
+    return dispatch => {
+        dispatch(request({ userId }));
+
+        accountService.addReminder(userId, name, account_number, reminder_name, token)
+            .then(
+                reminder => {
+                    dispatch(success(reminder));
+                    history.push({
+                        pathname: '/reminder'
+                        //state: { userId: userId } 
+                    });
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+    function request(reminder) { return { type: userConstants.SIGNUP_REQUEST, reminder } }
+    function success(reminder) { return { type: userConstants.SIGNUP_SUCCESS, reminder } }
+    function failure(error) { return { type: userConstants.SIGNUP_FAILURE, error } }
+}
+
+function updateReminder(account_number, reminder_name, token) {
+    return dispatch => {
+        dispatch(request({ account_number }));
+
+        accountService.updateReminder(account_number, reminder_name, token)
+            .then(
+                reminder => {
+                    dispatch(success(reminder));
+                    history.push({
+                        pathname: '/reminder'
+                    });
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+    function request(reminder) { return { type: userConstants.SIGNUP_REQUEST, reminder } }
+    function success(reminder) { return { type: userConstants.SIGNUP_SUCCESS, reminder } }
+    function failure(error) { return { type: userConstants.SIGNUP_FAILURE, error } }
+}
+
+function deleteReminder(account_number, reminder_name, token) {
+    return dispatch => {
+        dispatch(request({ account_number }));
+
+        accountService.deleteReminder(account_number, reminder_name, token)
+            .then(
+                reminder => {
+                    dispatch(success(reminder));
+                    history.push({
+                        pathname: '/reminder'
+                    });
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+    function request(reminder) { return { type: userConstants.SIGNUP_REQUEST, reminder } }
+    function success(reminder) { return { type: userConstants.SIGNUP_SUCCESS, reminder } }
     function failure(error) { return { type: userConstants.SIGNUP_FAILURE, error } }
 }
