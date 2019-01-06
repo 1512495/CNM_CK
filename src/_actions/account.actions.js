@@ -13,7 +13,7 @@ export function fetchAccountList(user_id, token) {
         fetch(`${config.apiUrl}/account/` + user_id, {
             method: 'GET',
             headers: {
-                'Authorization': 'JWT ' + token
+                'Authorization': token
             },
         }).then((response) => {
             if (response.status == 200) {
@@ -33,11 +33,11 @@ export function fetchAccountListSuccess(list) {
     };
 }
 
-function signup(userId, account_number, balance) {
+function signup(userId, account_number, balance, token) {
     return dispatch => {
         dispatch(request({ userId }));
 
-        accountService.signup(userId, account_number, balance)
+        accountService.signup(userId, account_number, balance, token)
             .then(
                 account => {
                     dispatch(success(account));
@@ -57,11 +57,11 @@ function signup(userId, account_number, balance) {
     function failure(error) { return { type: userConstants.SIGNUP_FAILURE, error } }
 }
 
-function addMoney(userId, account_number, balance, add_money) {
+function addMoney(userId, account_number, balance, add_money, token) {
     return dispatch => {
         dispatch(request({ account_number }));
 
-        accountService.addMoney(account_number, balance, add_money)
+        accountService.addMoney(account_number, balance, add_money, token)
             .then(
                 account => {
                     dispatch(success(account));

@@ -47,7 +47,6 @@ module.exports = {
         })
     },
     get_history: (req, res) => {
-        console.log('aasdasdd');
         let sql = "SELECT DISTINCT from_account, to_account, amount, user_id FROM transaction JOIN account WHERE transaction.from_account = account.account_number or transaction.to_account = account.account_number and `user_id` = ?";
 
         db.query(sql, [req.params.transactionId], (err, response) => {

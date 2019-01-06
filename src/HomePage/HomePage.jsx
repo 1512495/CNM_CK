@@ -15,7 +15,6 @@ class HomePage extends React.Component {
 
     async componentDidMount() {
         let token = await JSON.parse(localStorage.getItem('token'));
-        console.log(token);
         await this.setState({ token: token });
         setTimeout(() => {
             this.props.fetchAccountList(this.state.user.id, this.state.token);
@@ -38,7 +37,7 @@ class HomePage extends React.Component {
             fetch(`${config.apiUrl}/account/` + account.original.account_number, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': 'JWT ' + this.state.token,
+                    'Authorization': this.state.token,
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },

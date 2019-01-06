@@ -94,13 +94,15 @@ function logout() {
 }
 
 
-function signup(fullname, username, password, email, phone) {
+function signup(fullname, username, password, email, phone, token) {
     var data = JSON.stringify({name: fullname, username: username, password: password, email: email, phone: phone });
     const requestOptions = {
         method: 'POST',
         headers: {
+            'Authorization': token,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            
         },
         body: data
     };

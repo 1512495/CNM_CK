@@ -5,7 +5,7 @@ export function fetchHistoryList(user_id, token) {
         fetch(`${config.apiUrl}/transaction/` + user_id, {
             method: 'GET',
             headers: {
-                'Authorization': 'JWT ' + token
+                'Authorization':  token
             },
         }).then((response) => {
             if (response.status == 200) {

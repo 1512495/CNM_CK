@@ -72,7 +72,7 @@ class TransferPage extends React.Component {
                 fetch(`${config.apiUrl}/confirm/` + this.state.OTP, {
                     method: 'POST',
                     headers: {
-                        'Authorization': 'JWT ' + this.token,
+                        'Authorization': this.state.token,
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
                     },
@@ -110,7 +110,7 @@ class TransferPage extends React.Component {
         fetch(`${config.apiUrl}/otp/`, {
             method: 'POST',
             headers: {
-                'Authorization': 'JWT ' + this.token,
+                'Authorization': this.state.token,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
@@ -136,7 +136,7 @@ class TransferPage extends React.Component {
         fetch(`${config.apiUrl}/transaction/`, {
             method: 'POST',
             headers: {
-                'Authorization': 'JWT ' + this.token,
+                'Authorization': this.state.token,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
@@ -162,7 +162,7 @@ class TransferPage extends React.Component {
         fetch(`${config.apiUrl}/account/` + this.state.source, {
             method: 'PUT',
             headers: {
-                'Authorization': 'JWT ' + this.token,
+                'Authorization': this.state.token,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
@@ -178,7 +178,7 @@ class TransferPage extends React.Component {
         fetch(`${config.apiUrl}/account/` + this.state.account_number, {
             method: 'PUT',
             headers: {
-                'Authorization': 'JWT ' + this.token,
+                'Authorization': this.state.token,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
@@ -200,7 +200,7 @@ class TransferPage extends React.Component {
         fetch(`${config.apiUrl}/account_number/` + this.state.account_number, {
             method: 'GET',
             headers: {
-                'Authorization': 'JWT ' + this.token
+                'Authorization': this.state.token
             },
         }).then((response) => {
             if (response.status == 200) {

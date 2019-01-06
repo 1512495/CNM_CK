@@ -13,11 +13,14 @@ class AddMoneyPage extends React.Component {
             add_money: '',
             account_number: '',
             balance: '',
-            submitted: false
+            submitted: false,
+            token: ''
         };
     }
 
     async componentDidMount() {
+        let token = await JSON.parse(localStorage.getItem('token'));
+        await this.setState({ token: token });
         let account_number = this.props.location.state.account_number;
         let balance = this.props.location.state.balance;
         let userId = this.props.location.state.userId;
@@ -44,10 +47,10 @@ class AddMoneyPage extends React.Component {
         e.preventDefault();
 
         this.setState({ submitted: true });
-        const { userId, account_number, balance, add_money } = this.state;
+        const { userId, account_number, balance, add_money, token } = this.state;
         const { dispatch } = this.props;
         if (add_money) {
-            dispatch(accountActions.addMoney(userId, account_number, balance, add_money));
+            dispatch(accountActions.addMoney(userId, account_number, balance, add_money, token));
         }
     }
 

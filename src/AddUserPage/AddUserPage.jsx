@@ -14,8 +14,14 @@ class AddUserPage extends React.Component {
             email: '',
             phone: '',
             factor: 1,
-            submitted: false
+            submitted: false,
+            token: '',
         };
+    }
+
+    async componentDidMount() {
+        let token = await JSON.parse(localStorage.getItem('token'));
+        await this.setState({ token: token });
     }
 
     handleChange(e) {
@@ -32,10 +38,10 @@ class AddUserPage extends React.Component {
         e.preventDefault();
 
         this.setState({ submitted: true });
-        const { fullname, username, password, email, phone, factor } = this.state;
+        const { fullname, username, password, email, phone, factor, token } = this.state;
         const { dispatch } = this.props;
-        if (fullname && username && password && email && phone) {
-            dispatch(userActions.signup(fullname, username, password, email, phone, factor));
+        if (fullname && username && password && email && phone && token) {
+            dispatch(userActions.signup(fullname, username, password, email, phone, factor, token));
         }
     }
 

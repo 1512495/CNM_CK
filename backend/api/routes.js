@@ -18,47 +18,47 @@ module.exports = function (app) {
 
     // todoList Routes
     app.route('/staff')
-        .get(staffController.get)
-        .post(staffController.store);
+        .get(userController.loginRequired, staffController.get)
+        .post(userController.loginRequired, staffController.store);
 
     app.route('/staff/:staffId')
-        .get(staffController.detail)
-        .put(staffController.update)
-        .delete(staffController.delete);
+        .get(userController.loginRequired, staffController.detail)
+        .put(userController.loginRequired, staffController.update)
+        .delete(userController.loginRequired, staffController.delete);
 
 
     app.route('/account')
-        .get(accountController.get)
-        .post(accountController.store);
+        .get(userController.loginRequired, accountController.get)
+        .post(userController.loginRequired, accountController.store);
 
     app.route('/account/:accountId')
-        .get(accountController.detail) //get by user_id
-        .put(accountController.update)
-        .delete(accountController.delete)
+        .get(userController.loginRequired, accountController.detail) //get by user_id
+        .put(userController.loginRequired, accountController.update)
+        .delete(userController.loginRequired, accountController.delete)
 
     app.route('/account_number/:account_number')
-        .get(accountController.getByAccountNumber);
+        .get(userController.loginRequired, accountController.getByAccountNumber);
 
     app.route('/reminder')
-        .get(reminderController.get)
-        .post(reminderController.store);
+        .get(userController.loginRequired, reminderController.get)
+        .post(userController.loginRequired, reminderController.store);
 
     app.route('/reminder/:userId')
-        .get(reminderController.get);
+        .get(userController.loginRequired, reminderController.get);
 
     app.route('/reminder/:reminderId')
-        .put(reminderController.update)
-        .delete(reminderController.delete);
+        .put(userController.loginRequired, reminderController.update)
+        .delete(userController.loginRequired, reminderController.delete);
 
 
     app.route('/transaction')
-        .get(transactionController.get)
-        .post(transactionController.store);
+        .get(userController.loginRequired, transactionController.get)
+        .post(userController.loginRequired, transactionController.store);
 
     app.route('/transaction/:transactionId')
-        .get(transactionController.get_history)
-        .put(transactionController.update)
-        .delete(transactionController.delete);
+        .get(userController.loginRequired, transactionController.get_history)
+        .put(userController.loginRequired, transactionController.update)
+        .delete(userController.loginRequired, transactionController.delete);
 
 
 
@@ -68,10 +68,10 @@ module.exports = function (app) {
 
 
     app.route('/user/:userId')
-        .get(userController.detail)
-        .put(userController.update)
-        .delete(userController.delete);
+        .get(userController.loginRequired, userController.detail)
+        .put(userController.loginRequired, userController.update)
+        .delete(userController.loginRequired, userController.delete);
 
-    app.route('/otp').post(OTPController.post);
-    app.route('/confirm/:otp').post(OTPController.confirm);
+    app.route('/otp').post(userController.loginRequired, OTPController.post);
+    app.route('/confirm/:otp').post(userController.loginRequired, OTPController.confirm);
 }

@@ -51,7 +51,6 @@ module.exports = {
         })
     },
     login: (req, res) => {
-        console.log(req.body);
         let username = req.body.username;
         let password = req.body.password;
         db.query('SELECT * from user where username = "' + username + '"', (err, response) => {
@@ -59,7 +58,7 @@ module.exports = {
                 if (response.length > 0) {
                     if (response[0].password == password) {
                         let user = { email: response[0].email, username: response[0].username, name: response[0].name, id: response[0].id };
-                        let token = jwt.sign(user, SECRET, { expiresIn: 1000 });
+                        let token = jwt.sign(user, SECRET, { expiresIn: 100000 });
                         var refreshToken = randtoken.uid(256);
                         let temp = { access_token: token, refresh_token: refreshToken };
                         db.query('UPDATE user SET ? where id = ?', [temp, response[0].id]);

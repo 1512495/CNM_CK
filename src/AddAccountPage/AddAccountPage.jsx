@@ -12,11 +12,14 @@ class AddAccountPage extends React.Component {
             userId: '',
             account_number: '',
             balance: '',
-            submitted: false
+            submitted: false,
+            token: '',
         };
     }
 
     async componentDidMount() {
+        let token = await JSON.parse(localStorage.getItem('token'));
+        await this.setState({ token: token });
         let userId = this.props.location.state.userId;
         await this.setState({ userId: userId });
     }
@@ -44,10 +47,10 @@ class AddAccountPage extends React.Component {
         e.preventDefault();
 
         this.setState({ submitted: true });
-        const { userId, account_number, balance } = this.state;
+        const { userId, account_number, balance, token } = this.state;
         const { dispatch } = this.props;
         if (account_number.length >= 10 && balance) {
-            dispatch(accountActions.signup(userId, account_number, balance));
+            dispatch(accountActions.signup(userId, account_number, balance, token));
         }
     }
 
