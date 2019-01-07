@@ -109,11 +109,11 @@ function addReminder(userId, name, account_number, reminder_name, token) {
     function failure(error) { return { type: userConstants.SIGNUP_FAILURE, error } }
 }
 
-function updateReminder(account_number, reminder_name, token) {
+function updateReminder(account_number, reminder_name, token, user_id) {
     return dispatch => {
         dispatch(request({ account_number }));
 
-        accountService.updateReminder(account_number, reminder_name, token)
+        accountService.updateReminder(account_number, reminder_name, token, user_id)
             .then(
                 reminder => {
                     dispatch(success(reminder));
@@ -132,11 +132,11 @@ function updateReminder(account_number, reminder_name, token) {
     function failure(error) { return { type: userConstants.SIGNUP_FAILURE, error } }
 }
 
-function deleteReminder(account_number, reminder_name, token) {
+function deleteReminder(account_number, reminder_name, token, user_id) {
     return dispatch => {
         dispatch(request({ account_number }));
 
-        accountService.deleteReminder(account_number, reminder_name, token)
+        accountService.deleteReminder(account_number, reminder_name, token, user_id)
             .then(
                 reminder => {
                     dispatch(success(reminder));

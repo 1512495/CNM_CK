@@ -10,6 +10,7 @@ class UpdateReminderPage extends React.Component {
         super(props);
 
         this.state = {
+            user: this.props.user,
             account_number: '',
             reminder_name: '',
             submitted: false,
@@ -38,7 +39,7 @@ class UpdateReminderPage extends React.Component {
         const {account_number, reminder_name, token } = this.state;
         const { dispatch } = this.props;
         if (reminder_name) {
-            dispatch(accountActions.updateReminder(account_number, reminder_name, token));
+            dispatch(accountActions.updateReminder(account_number, reminder_name, token, this.state.user.id));
         }
     }
 
@@ -46,7 +47,7 @@ class UpdateReminderPage extends React.Component {
         const {account_number, reminder_name, token } = this.state;
         const { dispatch } = this.props;
         if (reminder_name) {
-            dispatch(accountActions.deleteReminder(account_number, reminder_name, token));
+            dispatch(accountActions.deleteReminder(account_number, reminder_name, token, this.state.user.id));
         }
     }
 
@@ -87,6 +88,7 @@ function mapStateToProps(state) {
     const { signingIn } = state.authentication;
     return {
         signingIn,
+        user: state.authentication.user,
     };
 }
 

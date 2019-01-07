@@ -101,7 +101,6 @@ module.exports = {
     },
 
     loginRequired: (req, res, next) => {
-        console.log(req);
         if (req.user || req.staff) {
             next();
         } else {

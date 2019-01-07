@@ -1,5 +1,7 @@
 import config from 'config';
-import { authHeader } from '../_helpers';
+import {
+    authHeader
+} from '../_helpers';
 
 export const accountService = {
     signup,
@@ -10,7 +12,11 @@ export const accountService = {
 };
 
 function signup(userId, account_number, balance, token) {
-    var data = JSON.stringify({user_id: userId, account_number: account_number, balance: balance});
+    var data = JSON.stringify({
+        user_id: userId,
+        account_number: account_number,
+        balance: balance
+    });
     console.log(token);
     const requestOptions = {
         method: 'POST',
@@ -27,8 +33,7 @@ function signup(userId, account_number, balance, token) {
                 let error;
                 if (res.status == 200) {
                     resolve(res.data);
-                }
-                else {
+                } else {
                     error = "Server is not working";
                     reject(error);
                 }
@@ -41,7 +46,9 @@ function addMoney(account_number, balance, add_money, token) {
     let moneyNumber = parseInt(add_money);
     let total = balanceNumber + moneyNumber;
 
-    var data = JSON.stringify({balance: total});
+    var data = JSON.stringify({
+        balance: total
+    });
     const requestOptions = {
         method: 'PUT',
         headers: {
@@ -52,13 +59,12 @@ function addMoney(account_number, balance, add_money, token) {
         body: data
     };
     return new Promise(function (resolve, reject) {
-        fetch(`${config.apiUrl}/account/`+ account_number, requestOptions)
+        fetch(`${config.apiUrl}/account/` + account_number, requestOptions)
             .then(res => {
                 let error;
                 if (res.status == 200) {
                     resolve(res.data);
-                }
-                else {
+                } else {
                     error = "Server is not working";
                     reject(error);
                 }
@@ -70,7 +76,39 @@ function addReminder(userId, name, account_number, reminder_name, token) {
     if (reminder_name == '') {
         reminder_name = name;
     }
-    var data = JSON.stringify({reminder_name: reminder_name});
+    var data = JSON.stringify({
+        reminder_name: reminder_name,
+        user_id: userId,
+        account_number: account_number
+    });
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Authorization': token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: data
+    };
+    return new Promise(function (resolve, reject) {
+        fetch(`${config.apiUrl}/reminder`, requestOptions)
+            .then(res => {
+                let error;
+                if (res.status == 200) {
+                    resolve(res.data);
+                } else {
+                    error = "Server is not working";
+                    reject(error);
+                }
+            });
+    })
+}
+
+function updateReminder(account_number, reminder_name, token, user_id) {
+    var data = JSON.stringify({
+        reminder_name: reminder_name,
+        user_id: user_id
+    });
     const requestOptions = {
         method: 'PUT',
         headers: {
@@ -81,13 +119,12 @@ function addReminder(userId, name, account_number, reminder_name, token) {
         body: data
     };
     return new Promise(function (resolve, reject) {
-        fetch(`${config.apiUrl}/reminder/`+account_number, requestOptions)
+        fetch(`${config.apiUrl}/reminder/` + account_number, requestOptions)
             .then(res => {
                 let error;
                 if (res.status == 200) {
                     resolve(res.data);
-                }
-                else {
+                } else {
                     error = "Server is not working";
                     reject(error);
                 }
@@ -95,33 +132,10 @@ function addReminder(userId, name, account_number, reminder_name, token) {
     })
 }
 
-function updateReminder(account_number, reminder_name, token) {
-    var data = JSON.stringify({reminder_name: reminder_name});
-    const requestOptions = {
-        method: 'PUT',
-        headers: {
-            'Authorization': token,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: data
-    };
-    return new Promise(function (resolve, reject) {
-        fetch(`${config.apiUrl}/reminder/`+account_number, requestOptions)
-            .then(res => {
-                let error;
-                if (res.status == 200) {
-                    resolve(res.data);
-                }
-                else {
-                    error = "Server is not working";
-                    reject(error);
-                }
-            });
-    })
-}
-
-function deleteReminder(account_number, reminder_name, token) {
+function deleteReminder(account_number, reminder_name, token, user_id) {
+    let data = JSON.stringify({
+        user_id: user_id
+    });
     const requestOptions = {
         method: 'DELETE',
         headers: {
@@ -129,15 +143,15 @@ function deleteReminder(account_number, reminder_name, token) {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
+        body: data,
     };
     return new Promise(function (resolve, reject) {
-        fetch(`${config.apiUrl}/reminder/`+account_number, requestOptions)
+        fetch(`${config.apiUrl}/reminder/` + account_number, requestOptions)
             .then(res => {
                 let error;
                 if (res.status == 200) {
                     resolve(res.data);
-                }
-                else {
+                } else {
                     error = "Server is not working";
                     reject(error);
                 }
